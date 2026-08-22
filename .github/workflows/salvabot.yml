@@ -1,0 +1,40 @@
+name: Salvabot - ciclo giornaliero
+
+# Lancia Salvabot da solo, ogni giorno, senza bisogno del tuo PC o telefono acceso.
+# "cron" e' il modo standard per programmare un orario: qui e' impostato
+# alle 07:00 UTC (le 08:00/09:00 in Italia, a seconda dell'ora legale).
+on:
+  schedule:
+    - cron: "0 7 * * *"
+  workflow_dispatch: {}  # permette anche di lanciarlo a mano dal sito di GitHub, per test
+
+jobs:
+  ciclo-salvabot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # serve per poter salvare lo stato aggiornato nel repository
+    steps:
+      - name: Scarica il codice del repository
+        uses: actions/checkout@v4
+
+      - name: Prepara Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installa le dipendenze
+        run: pip install -r requirements.txt
+
+      - name: Esegui il ciclo di Salvabot
+        run: python3 run_ciclo.py --saldo 30
+
+      - name: Genera la pagina web aggiornata
+        run: python3 genera_pagina.py
+
+      - name: Salva stato, notifiche e pagina aggiornati nel repository
+        run: |
+          git config user.name "salvabot-bot"
+          git config user.email "salvabot-bot@users.noreply.github.com"
+          git add stato_salvabot.json impostazioni_salvabot.json notifiche_salvabot.json docs/index.html
+          git diff --quiet --cached || git commit -m "Ciclo automatico del $(date +'%Y-%m-%d')"
+          git push
