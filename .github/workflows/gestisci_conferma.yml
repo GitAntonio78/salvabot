@@ -1,0 +1,48 @@
+name: Salvabot - gestisci conferma
+
+# Si attiva quando viene aperta una issue con l'etichetta "salvabot-azione":
+# e' esattamente cio' che succede quando tocchi "Conferma" o "Non ora"
+# sulla pagina web (apre una issue pre-compilata).
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  gestisci:
+    if: contains(github.event.issue.labels.*.name, 'salvabot-azione')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - name: Scarica il codice del repository
+        uses: actions/checkout@v4
+
+      - name: Prepara Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installa le dipendenze
+        run: pip install -r requirements.txt
+
+      - name: Applica la scelta
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: python3 gestisci_conferma.py | tee risultato.txt
+
+      - name: Salva stato e pagina aggiornati
+        run: |
+          git config user.name "salvabot-bot"
+          git config user.email "salvabot-bot@users.noreply.github.com"
+          git add stato_salvabot.json impostazioni_salvabot.json notifiche_salvabot.json docs/index.html
+          git diff --quiet --cached || git commit -m "Conferma applicata: issue #${{ github.event.issue.number }}"
+          git push
+
+      - name: Commenta e chiudi la richiesta
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body "$(cat risultato.txt)"
+          gh issue close ${{ github.event.issue.number }}
