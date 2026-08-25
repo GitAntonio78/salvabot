@@ -35,6 +35,6 @@ jobs:
         run: |
           git config user.name "salvabot-bot"
           git config user.email "salvabot-bot@users.noreply.github.com"
-          git add stato_salvabot.json impostazioni_salvabot.json notifiche_salvabot.json docs/index.html
+          git add $(ls stato_salvabot.json impostazioni_salvabot.json notifiche_salvabot.json docs/index.html 2>/dev/null)
           git diff --quiet --cached || git commit -m "Ciclo automatico del $(date +'%Y-%m-%d')"
           git push
