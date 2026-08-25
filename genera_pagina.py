@@ -122,6 +122,24 @@ def _badge_trend(direzione: str) -> str:
     return f'<span class="badge grigio">{_icona("pari", "#555")} Stabile</span>'
 
 
+def _funzione_bloccata(titolo: str, tipo_notifica_attiva: bool) -> str:
+    """
+    Indicazione semplice che una funzione (salvadanaio o espansione) esiste
+    ma non e' ancora disponibile - nessun numero o barra di avanzamento,
+    solo un bottone grigio, per non creare l'ansia di "controllare quanto manca".
+    Se esiste gia' una notifica vera attiva per questo tipo, non la mostriamo
+    (la notifica vera con i bottoni attivi la sostituisce).
+    """
+    if tipo_notifica_attiva:
+        return ""
+    return (
+        f'<div class="funzione-bloccata">'
+        f'<span>{titolo}</span>'
+        f'<span class="bottone disabilitato">Non ancora disponibile</span>'
+        f'</div>'
+    )
+
+
 def genera() -> None:
     CARTELLA_OUTPUT.mkdir(exist_ok=True)
 
@@ -154,6 +172,12 @@ def genera() -> None:
         f'</div>'
         for n in notifiche_non_lette
     ) or '<p class="muto">Nessuna notifica in sospeso.</p>'
+
+    tipi_attivi = {n["tipo"] for n in notifiche_non_lette}
+    funzioni_bloccate = (
+        _funzione_bloccata("Salvadanaio", "salvadanaio" in tipi_attivi)
+        + _funzione_bloccata("Espansione crypto/azioni", "espansione" in tipi_attivi)
+    )
 
     html = f"""<!DOCTYPE html>
 <html lang="it">
@@ -197,6 +221,11 @@ def genera() -> None:
              font-weight: 500; text-decoration: none; }}
   .bottone.primario {{ background: #1e7d3c; color: #fff; }}
   .bottone.secondario {{ background: #eee; color: #444; }}
+  .bottone.disabilitato {{ padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 500;
+             background: #f0f0f0; color: #aaa; }}
+  .funzione-bloccata {{ display: flex; justify-content: space-between; align-items: center;
+             padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }}
+  .funzione-bloccata:last-child {{ border-bottom: none; }}
   .impostazioni .riga span:last-child {{ font-weight: 500; }}
 </style>
 </head>
@@ -217,6 +246,8 @@ def genera() -> None:
     <h2>Notifiche</h2>
     {righe_notifiche}
   </div>
+
+  {f'<div class="card sezione"><h2>Prossimi passi</h2>{funzioni_bloccate}</div>' if funzioni_bloccate else ''}
 
   <div class="card sezione">
     <h2>Posizioni aperte</h2>
