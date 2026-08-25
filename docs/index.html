@@ -40,6 +40,11 @@
              font-weight: 500; text-decoration: none; }
   .bottone.primario { background: #1e7d3c; color: #fff; }
   .bottone.secondario { background: #eee; color: #444; }
+  .bottone.disabilitato { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 500;
+             background: #f0f0f0; color: #aaa; }
+  .funzione-bloccata { display: flex; justify-content: space-between; align-items: center;
+             padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
+  .funzione-bloccata:last-child { border-bottom: none; }
   .impostazioni .riga span:last-child { font-weight: 500; }
 </style>
 </head>
@@ -52,7 +57,7 @@
       <p class="valore">30.00 €</p>
       <span class="badge grigio"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round"><line x1="4" y1="12" x2="20" y2="12"/></svg> Stabile</span>
     </div>
-    <svg viewBox="0 0 340 70" width="100%" height="70" preserveAspectRatio="none" style="margin-top: 10px;"><polyline points="0.0,65.0 340.0,65.0" fill="none" stroke="#1e7d3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 340 70" width="100%" height="70" preserveAspectRatio="none" style="margin-top: 10px;"><polyline points="0.0,65.0 170.0,65.0 340.0,65.0" fill="none" stroke="#1e7d3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <div class="riga" style="margin-top: 10px;"><span>Salvadanaio</span><span>0.00 €</span></div>
   </div>
 
@@ -60,6 +65,8 @@
     <h2>Notifiche</h2>
     <p class="muto">Nessuna notifica in sospeso.</p>
   </div>
+
+  <div class="card sezione"><h2>Prossimi passi</h2><div class="funzione-bloccata"><span>Salvadanaio</span><span class="bottone disabilitato">Non ancora disponibile</span></div><div class="funzione-bloccata"><span>Espansione crypto/azioni</span><span class="bottone disabilitato">Non ancora disponibile</span></div></div>
 
   <div class="card sezione">
     <h2>Posizioni aperte</h2>
