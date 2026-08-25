@@ -45,7 +45,7 @@ SOGLIA_PROPOSTA_ESPANSIONE = 300.0    # da qui in poi può proporre di provare c
 
 # --- Repository GitHub (serve per generare i link di conferma nella pagina web) ---
 # Sostituisci con "tuonomeutente/nomerepository" una volta creato il repository.
-GITHUB_REPO = "tuonomeutente/salvabot"
+GITHUB_REPO = "GitAntonio78/salvabot"
 
 # --- Criteri minimi di validazione demo prima di valutare il passaggio al reale ---
 DEMO_SETTIMANE_MINIME = 8
