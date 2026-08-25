@@ -1,0 +1,26 @@
+{
+  "stato_bot": {
+    "saldo_disponibile": 0.0,
+    "posizioni": {
+      "VWCE.DE": {
+        "ticker": "VWCE.DE",
+        "prezzo_di_carico": 166.3000030517578,
+        "quota_investita": 30.0
+      }
+    },
+    "in_raffreddamento_fino_al": null
+  },
+  "portafoglio": {
+    "saldo_investito": 30.0,
+    "salvadanaio": 0.0,
+    "storico_saldo": [
+      30.0
+    ],
+    "storico_eventi": [
+      {
+        "data": "2026-08-25",
+        "tipo": "investito"
+      }
+    ]
+  }
+}
