@@ -11,12 +11,13 @@
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 30.0,
+    "saldo_investito": 30.043293487066318,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
       30.0,
-      30.0
+      30.0,
+      30.043293487066318
     ],
     "storico_eventi": [
       {
