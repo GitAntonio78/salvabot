@@ -47,6 +47,14 @@ SOGLIA_PROPOSTA_ESPANSIONE = 300.0    # da qui in poi può proporre di provare c
 # Sostituisci con "tuonomeutente/nomerepository" una volta creato il repository.
 GITHUB_REPO = "GitAntonio78/salvabot"
 
+# --- Cambio posizione se ne trova una migliore ---
+COMMISSIONE_STIMATA_EUR = 2.5              # stima prudente per operazione (da affinare con i costi reali del broker)
+SOGLIA_DIFFERENZA_CRITERI_SWITCH = 1       # il nuovo ETF deve avere almeno N criteri favorevoli in più
+
+# --- Posizioni multiple: proposte a soglia (mai automatiche) ---
+# Indice 0 = soglia per passare da 1 a 2 posizioni, indice 1 = da 2 a 3, ecc.
+SOGLIE_POSIZIONI_AGGIUNTIVE = [150.0, 400.0]
+
 # --- Criteri minimi di validazione demo prima di valutare il passaggio al reale ---
 DEMO_SETTIMANE_MINIME = 8
 DEMO_CICLI_MINIMI = 5
