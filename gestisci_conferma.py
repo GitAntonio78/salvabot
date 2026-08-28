@@ -78,6 +78,14 @@ def gestisci(titolo_issue: str, corpo_issue: str) -> str:
                 if proposte:
                     messaggio_risultato = self_evaluation.applica_proposta(proposte[0])
 
+        elif notifica["tipo"] == "nuova_posizione":
+            impostazioni = settings_store.carica_impostazioni()
+            nuovo_numero = impostazioni["POSIZIONI_CONSENTITE"] + 1
+            settings_store.aggiorna_impostazione("POSIZIONI_CONSENTITE", nuovo_numero)
+            messaggio_risultato = (
+                f"Confermato: da ora Salvabot puo' tenere fino a {nuovo_numero} posizioni insieme."
+            )
+
     notifications.segna_come_letta(id_notifica)
     genera_pagina.genera()
     return messaggio_risultato
