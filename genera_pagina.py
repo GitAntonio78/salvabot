@@ -88,30 +88,49 @@ def _icona(nome: str, colore: str = "currentColor") -> str:
     return icone.get(nome, "")
 
 
-def _sparkline(storico_saldo: list[float], colore: str = "#1e7d3c") -> str:
-    """Piccolo grafico a linea (SVG) dell'andamento del saldo, senza librerie esterne."""
-    valori = storico_saldo[-30:]  # ultimi 30 punti, per restare leggibile
-    if len(valori) < 2:
+def _sparkline(storico_punti: list[dict], colore: str = "#1e7d3c") -> str:
+    """
+    Piccolo grafico a linea con puntini (SVG), sugli ultimi 10 passaggi di
+    Salvabot (storico_punti e' gia' limitato a 10 a monte, nel portafoglio).
+    """
+    if len(storico_punti) < 2:
         return '<p class="muto" style="margin-top:8px;">Non ci sono ancora abbastanza dati per un grafico.</p>'
 
+    valori = [p["saldo"] for p in storico_punti]
     larghezza, altezza = 340, 70
     minimo, massimo = min(valori), max(valori)
     intervallo = (massimo - minimo) or 1.0
 
-    punti = []
+    coordinate = []
     for i, v in enumerate(valori):
         x = (i / (len(valori) - 1)) * larghezza
-        y = altezza - ((v - minimo) / intervallo) * (altezza - 10) - 5
-        punti.append(f"{x:.1f},{y:.1f}")
-    polilinea = " ".join(punti)
+        y = altezza - ((v - minimo) / intervallo) * (altezza - 14) - 7
+        coordinate.append((x, y))
+
+    polilinea = " ".join(f"{x:.1f},{y:.1f}" for x, y in coordinate)
+    puntini = "".join(
+        f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3.2" fill="{colore}"/>' for x, y in coordinate
+    )
 
     return (
         f'<svg viewBox="0 0 {larghezza} {altezza}" width="100%" height="{altezza}" '
         f'preserveAspectRatio="none" style="margin-top: 10px;">'
         f'<polyline points="{polilinea}" fill="none" stroke="{colore}" stroke-width="2" '
         f'stroke-linecap="round" stroke-linejoin="round"/>'
+        f'{puntini}'
         f'</svg>'
     )
+
+
+def _elenco_punti(storico_punti: list[dict]) -> str:
+    """Elenco leggibile degli ultimi passaggi (data/ora + saldo), dal più recente."""
+    if not storico_punti:
+        return ""
+    righe = "".join(
+        f'<div class="riga"><span>{p["data_ora"]}</span><span>{p["saldo"]:.2f} €</span></div>'
+        for p in reversed(storico_punti)
+    )
+    return f'<div class="elenco-punti">{righe}</div>'
 
 
 def _badge_trend(direzione: str) -> str:
@@ -148,17 +167,18 @@ def genera() -> None:
     notifiche_non_lette = notifications.non_lette()
 
     if stato_e_portafoglio is None:
-        saldo, salvadanaio, direzione, giorni_trend, posizioni, storico = 0.0, 0.0, "stabile", 0, {}, []
+        saldo, salvadanaio, direzione, giorni_trend, posizioni, storico_punti = 0.0, 0.0, "stabile", 0, {}, []
     else:
         stato, portafoglio = stato_e_portafoglio
         saldo = portafoglio.saldo_investito
         salvadanaio = portafoglio.salvadanaio
         direzione, giorni_trend = portafoglio.giorni_di_trend()
         posizioni = stato.posizioni
-        storico = portafoglio.storico_saldo
+        storico_punti = portafoglio.storico_punti
 
     colore_grafico = "#c9432b" if direzione == "calo" else "#1e7d3c"
-    grafico_saldo = _sparkline(storico, colore_grafico)
+    grafico_saldo = _sparkline(storico_punti, colore_grafico)
+    elenco_punti = _elenco_punti(storico_punti)
 
     righe_posizioni = "".join(
         f'<div class="riga"><span>{ticker}</span><span>{p.quota_investita:.2f} EUR</span></div>'
@@ -215,6 +235,8 @@ def genera() -> None:
   .sezione {{ margin-top: 1rem; }}
   .sezione h2 {{ font-size: 0.8rem; color: #888; margin: 0 0 8px; text-transform: uppercase; letter-spacing: .03em; }}
   .riga {{ display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }}
+  .elenco-punti {{ margin-top: 4px; }}
+  .elenco-punti .riga {{ font-size: 0.78rem; color: #888; padding: 5px 0; }}
   .muto {{ color: #999; font-size: 0.85rem; }}
   .notifica {{ background: #f7f7f7; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; font-size: 0.85rem; }}
   .notifica.conferma {{ background: #fdf1dd; }}
@@ -242,6 +264,7 @@ def genera() -> None:
       {_badge_trend(direzione)}
     </div>
     {grafico_saldo}
+    {elenco_punti}
     <div class="riga" style="margin-top: 10px;"><span>Salvadanaio</span><span>{salvadanaio:.2f} €</span></div>
   </div>
 
