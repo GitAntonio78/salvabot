@@ -21,7 +21,7 @@ class Portafoglio:
     def registra_evento(self, data: str, tipo: str) -> None:
         """
         Registra un evento tipizzato (per l'auto-valutazione).
-        Tipi usati: 'investito', 'attesa', 'stop_loss', 'take_profit', 'difensiva'.
+        Tipi usati: 'investito', 'attesa', 'stop_loss', 'take_profit', 'difensiva', 'switch'.
         """
         self.storico_eventi.append({"data": data, "tipo": tipo})
 
@@ -54,6 +54,17 @@ class Portafoglio:
 
     def puo_proporre_espansione(self) -> bool:
         return self.saldo_investito >= config.SOGLIA_PROPOSTA_ESPANSIONE
+
+    def puo_proporre_nuova_posizione(self, posizioni_consentite: int) -> bool:
+        """
+        True se il saldo ha raggiunto la soglia per proporre una posizione
+        aggiuntiva rispetto a quelle gia' consentite. Non propone piu' nulla
+        una volta superate le soglie definite in config (si può estendere).
+        """
+        indice = posizioni_consentite - 1  # 1->2 usa soglia[0], 2->3 usa soglia[1], ecc.
+        if indice < 0 or indice >= len(config.SOGLIE_POSIZIONI_AGGIUNTIVE):
+            return False
+        return self.saldo_investito >= config.SOGLIE_POSIZIONI_AGGIUNTIVE[indice]
 
     def applica_scelta_salvadanaio(self, quanto_accantonare: float) -> None:
         """L'utente conferma quanto spostare nel salvadanaio: il resto continua a lavorare."""
