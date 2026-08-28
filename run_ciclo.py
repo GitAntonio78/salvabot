@@ -12,6 +12,7 @@ solo per testare la strategia su dati storici, non per l'uso reale.
 """
 
 import argparse
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -68,6 +69,7 @@ def esegui_singolo_ciclo(
     saldo_operativo = stato.saldo_disponibile + valore_posizioni
     portafoglio.saldo_investito = saldo_operativo
     portafoglio.registra_saldo_giornaliero(saldo_operativo)
+    portafoglio.registra_punto(datetime.now().strftime("%d/%m %H:%M"), saldo_operativo)
 
     eventi = []
     for evento in log:
