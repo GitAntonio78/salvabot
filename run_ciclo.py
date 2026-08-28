@@ -61,6 +61,7 @@ def esegui_singolo_ciclo(
         prezzi_indice_riferimento=serie_indice,
         oggi=oggi,
         cautela=cautela,
+        posizioni_consentite=impostazioni["POSIZIONI_CONSENTITE"],
     )
 
     valore_posizioni = decision_engine._valore_posizioni(stato, dati_per_ticker, oggi)
@@ -92,6 +93,15 @@ def esegui_singolo_ciclo(
             f"vuoi che provi anche crypto o azioni con una piccola quota?"
         )
         notifications.invia("espansione", msg, str(oggi.date()), richiede_conferma=True)
+        eventi.append(f"[proposta] {msg}")
+
+    if portafoglio.puo_proporre_nuova_posizione(impostazioni["POSIZIONI_CONSENTITE"]):
+        prossimo_numero = impostazioni["POSIZIONI_CONSENTITE"] + 1
+        msg = (
+            f"Saldo adeguato ({saldo_operativo:.2f} EUR) per diversificare: "
+            f"vuoi che provi ad aprire una {prossimo_numero}a posizione insieme a quella attuale?"
+        )
+        notifications.invia("nuova_posizione", msg, str(oggi.date()), richiede_conferma=True)
         eventi.append(f"[proposta] {msg}")
 
     proposte_autovalutazione = self_evaluation.valuta(portafoglio, cautela_attuale=cautela)
