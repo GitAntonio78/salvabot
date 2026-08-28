@@ -1,9 +1,13 @@
 """
 Motore decisionale di Salvabot.
 
-Applica le uniche due regole di rischio decise nel progetto:
+Applica le regole di rischio decise nel progetto:
 1. Pazienza in ingresso: investe solo se abbastanza convinto, altrimenti aspetta.
 2. Stop-loss/take-profit in uscita: vende in automatico oltre soglia.
+3. Cambio posizione se ne trova una nettamente migliore, ma SOLO se il
+   guadagno gia' maturato copre le commissioni stimate del cambio.
+4. Puo' tenere piu' posizioni insieme, ma solo fino al numero consentito
+   (che sale solo con una conferma esplicita dell'utente, mai da solo).
 
 Più la modalità difensiva per i crolli di mercato generalizzati.
 """
@@ -49,12 +53,86 @@ def paniere_per_saldo(saldo: float) -> list[dict]:
     return paniere_scelto
 
 
+def valuta_switch(
+    stato: StatoBot,
+    dati_per_ticker: dict[str, pd.DataFrame],
+    oggi: pd.Timestamp,
+    cautela: str,
+) -> list[dict]:
+    """
+    Per ogni posizione aperta, controlla se esiste un'alternativa nettamente
+    migliore (almeno SOGLIA_DIFFERENZA_CRITERI_SWITCH criteri favorevoli in
+    piu'). Cambia SOLO se il guadagno gia' maturato in euro sulla posizione
+    attuale copre la stima delle commissioni del cambio (vendita + riacquisto).
+    Altrimenti resta fermo, anche se l'alternativa sembra migliore.
+    """
+    eventi = []
+    if not stato.posizioni:
+        return eventi
+
+    saldo_totale = stato.saldo_disponibile + _valore_posizioni(stato, dati_per_ticker, oggi)
+    paniere_attuale = paniere_per_saldo(saldo_totale)
+    dati_paniere = {t: dati_per_ticker[t] for t in paniere_attuale if t in dati_per_ticker}
+    punteggi = scoring.valuta_paniere(dati_paniere)
+
+    soglia_minima_criteri = config.LIVELLI_CAUTELA.get(cautela, 2)
+    costo_stimato_switch = 2 * config.COMMISSIONE_STIMATA_EUR
+
+    for ticker in list(stato.posizioni.keys()):
+        posizione = stato.posizioni[ticker]
+        prezzo_attuale = _ultimo_prezzo(dati_per_ticker[ticker], oggi)
+        if prezzo_attuale is None:
+            continue
+
+        variazione = (prezzo_attuale - posizione.prezzo_di_carico) / posizione.prezzo_di_carico
+        punteggio_attuale = punteggi.get(ticker, {}).get("criteri_favorevoli", 0)
+
+        candidati_migliori = [
+            (t, d) for t, d in punteggi.items()
+            if t != ticker
+            and t not in stato.posizioni
+            and d["criteri_favorevoli"] >= soglia_minima_criteri
+            and d["criteri_favorevoli"] >= punteggio_attuale + config.SOGLIA_DIFFERENZA_CRITERI_SWITCH
+        ]
+        if not candidati_migliori:
+            continue
+
+        candidati_migliori.sort(key=lambda c: (-c[1]["criteri_favorevoli"], c[1]["volatilita"]))
+        nuovo_ticker, _ = candidati_migliori[0]
+
+        guadagno_in_euro = posizione.quota_investita * variazione
+
+        if variazione > 0 and guadagno_in_euro > costo_stimato_switch:
+            valore_finale = posizione.quota_investita * (1 + variazione)
+            stato.saldo_disponibile += valore_finale
+            del stato.posizioni[ticker]
+            eventi.append({
+                "tipo": "switch",
+                "messaggio": (
+                    f"Trovata un'occasione migliore: chiuso {ticker} (+{variazione:.1%}, "
+                    f"guadagno di {guadagno_in_euro:.2f} EUR copre le commissioni stimate) "
+                    f"per lasciare spazio a {nuovo_ticker}."
+                ),
+            })
+        else:
+            eventi.append({
+                "tipo": "attesa",
+                "messaggio": (
+                    f"{nuovo_ticker} sembra piu' promettente di {ticker}, ma il guadagno attuale "
+                    f"non coprirebbe le commissioni stimate del cambio: resto fermo su {ticker}."
+                ),
+            })
+
+    return eventi
+
+
 def decidi_ciclo(
     stato: StatoBot,
     dati_per_ticker: dict[str, pd.DataFrame],
     prezzi_indice_riferimento: pd.Series,
     oggi: pd.Timestamp,
     cautela: str = config.CAUTELA_DEFAULT,
+    posizioni_consentite: int = 1,
 ) -> list[dict]:
     """
     Esegue un ciclo decisionale completo. Modifica 'stato' sul posto e
@@ -112,13 +190,18 @@ def decidi_ciclo(
                 ),
             })
 
-    # --- 2. Se in raffreddamento, ci si ferma qui: nessun nuovo acquisto ---
+    # --- 2. Se in raffreddamento, ci si ferma qui: nessun nuovo acquisto o cambio ---
     if in_raffreddamento:
         log.append({"tipo": "attesa", "messaggio": "In modalita' difensiva: nessun nuovo acquisto questo ciclo."})
         return log
 
-    # --- 3. Valutazione di nuove opportunita' (solo se c'e' saldo libero) ---
+    # --- 2b. Cambio posizione se ne trova una nettamente migliore (solo se conviene) ---
+    log.extend(valuta_switch(stato, dati_per_ticker, oggi, cautela))
+
+    # --- 3. Valutazione di nuove opportunita' (solo se c'e' saldo libero E spazio per una posizione in più) ---
     if stato.saldo_disponibile <= 0:
+        return log
+    if len(stato.posizioni) >= posizioni_consentite:
         return log
 
     paniere_attuale = paniere_per_saldo(stato.saldo_disponibile + _valore_posizioni(stato, dati_per_ticker, oggi))
