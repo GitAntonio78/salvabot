@@ -174,9 +174,12 @@ def genera() -> None:
     ) or '<p class="muto">Nessuna notifica in sospeso.</p>'
 
     tipi_attivi = {n["tipo"] for n in notifiche_non_lette}
+    posizioni_consentite = impostazioni["POSIZIONI_CONSENTITE"]
+    ce_altra_soglia = (posizioni_consentite - 1) < len(config.SOGLIE_POSIZIONI_AGGIUNTIVE)
     funzioni_bloccate = (
         _funzione_bloccata("Salvadanaio", "salvadanaio" in tipi_attivi)
         + _funzione_bloccata("Espansione crypto/azioni", "espansione" in tipi_attivi)
+        + (_funzione_bloccata("Nuova posizione", "nuova_posizione" in tipi_attivi) if ce_altra_soglia else "")
     )
 
     html = f"""<!DOCTYPE html>
@@ -259,6 +262,7 @@ def genera() -> None:
     <div class="riga"><span>Cautela</span><span>{impostazioni['CAUTELA']}</span></div>
     <div class="riga"><span>Stop-loss</span><span>{impostazioni['STOP_LOSS_PCT']:.0%}</span></div>
     <div class="riga"><span>Take-profit</span><span>{impostazioni['TAKE_PROFIT_PCT']:.0%}</span></div>
+    <div class="riga"><span>Posizioni consentite</span><span>{posizioni_consentite}</span></div>
   </div>
 
   <p class="muto" style="text-align:center; font-size: 0.75rem;">
