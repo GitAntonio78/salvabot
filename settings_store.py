@@ -14,7 +14,7 @@ import config
 
 FILE_IMPOSTAZIONI_DEFAULT = Path("impostazioni_salvabot.json")
 
-CHIAVI_MODIFICABILI = ("STOP_LOSS_PCT", "TAKE_PROFIT_PCT", "CAUTELA")
+CHIAVI_MODIFICABILI = ("STOP_LOSS_PCT", "TAKE_PROFIT_PCT", "CAUTELA", "POSIZIONI_CONSENTITE")
 
 
 def impostazioni_di_default() -> dict:
@@ -22,6 +22,7 @@ def impostazioni_di_default() -> dict:
         "STOP_LOSS_PCT": config.STOP_LOSS_PCT,
         "TAKE_PROFIT_PCT": config.TAKE_PROFIT_PCT,
         "CAUTELA": config.CAUTELA_DEFAULT,
+        "POSIZIONI_CONSENTITE": 1,  # quante posizioni puo' tenere aperte insieme; sale solo con conferma esplicita
     }
 
 
@@ -29,7 +30,12 @@ def carica_impostazioni(percorso: Path = FILE_IMPOSTAZIONI_DEFAULT) -> dict:
     """Ricarica le impostazioni salvate, o restituisce i default se non esistono ancora."""
     if not percorso.exists():
         return impostazioni_di_default()
-    return json.loads(percorso.read_text())
+    impostazioni = json.loads(percorso.read_text())
+    # Se il file era stato salvato prima che una nuova impostazione fosse introdotta,
+    # aggiunge i default mancanti invece di fallire.
+    for chiave, valore in impostazioni_di_default().items():
+        impostazioni.setdefault(chiave, valore)
+    return impostazioni
 
 
 def salva_impostazioni(impostazioni: dict, percorso: Path = FILE_IMPOSTAZIONI_DEFAULT) -> None:
