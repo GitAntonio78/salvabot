@@ -17,6 +17,7 @@ class Portafoglio:
     salvadanaio: float = 0.0
     storico_saldo: list[float] = field(default_factory=list)
     storico_eventi: list[dict] = field(default_factory=list)
+    storico_punti: list[dict] = field(default_factory=list)  # ultimi 10 {data_ora, saldo}, per il grafico
 
     def registra_evento(self, data: str, tipo: str) -> None:
         """
@@ -31,6 +32,14 @@ class Portafoglio:
     def registra_saldo_giornaliero(self, saldo_operativo: float) -> None:
         """Da chiamare ogni ciclo per tenere lo storico (serve per 'in crescita da N giorni')."""
         self.storico_saldo.append(saldo_operativo)
+
+    def registra_punto(self, data_ora: str, saldo: float) -> None:
+        """
+        Aggiunge un punto per il grafico (data/ora + saldo di quel ciclo).
+        Tiene solo gli ultimi 10: il più vecchio scompare quando arriva un nuovo punto.
+        """
+        self.storico_punti.append({"data_ora": data_ora, "saldo": round(saldo, 2)})
+        self.storico_punti = self.storico_punti[-10:]
 
     def giorni_di_trend(self) -> tuple[str, int]:
         """Restituisce ('crescita'|'calo'|'stabile', numero di giorni consecutivi)."""
