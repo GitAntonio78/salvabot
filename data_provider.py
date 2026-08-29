@@ -38,7 +38,16 @@ def scarica_storico(ticker: str, giorni: int = 400) -> pd.DataFrame:
         try:
             dati = yf.download(ticker, period=f"{giorni}d", progress=False, auto_adjust=True)
             if dati is not None and not dati.empty:
-                return dati
+                colonna_prezzo = dati["Close"]
+                if isinstance(colonna_prezzo, pd.DataFrame):
+                    colonna_prezzo = colonna_prezzo.iloc[:, 0]
+                # Scarta le righe senza un prezzo di chiusura valido: capita per la
+                # giornata odierna se il mercato non ha ancora chiuso (o non ha
+                # ancora aperto) quando Salvabot gira - meglio usare l'ultimo
+                # prezzo di chiusura vero, mai un dato mancante/incompleto.
+                dati = dati.loc[colonna_prezzo.notna()]
+                if not dati.empty:
+                    return dati
         except Exception:
             pass  # ricade sui dati sintetici se il download fallisce (es. no internet)
 
