@@ -5,8 +5,13 @@ name: Salvabot - ciclo giornaliero
 # alle 07:00 UTC (le 08:00/09:00 in Italia, a seconda dell'ora legale).
 on:
   schedule:
-    - cron: "17 7 * * *"
-    - cron: "43 15 * * *"
+    # Un solo passaggio al giorno, dopo la chiusura dei mercati europei
+    # (Francoforte/Milano chiudono alle 17:30 italiane) - cosi' il prezzo
+    # di chiusura e' sempre gia' definitivo, invece di girare in apertura
+    # quando i dati del giorno sono ancora incompleti.
+    # 17:45 UTC = 18:45 in inverno / 19:45 in estate (ora italiana), sempre
+    # con abbondante margine dopo la chiusura in entrambe le stagioni.
+    - cron: "45 17 * * *"
   workflow_dispatch: {}  # permette anche di lanciarlo a mano dal sito di GitHub, per test
 
 jobs:
