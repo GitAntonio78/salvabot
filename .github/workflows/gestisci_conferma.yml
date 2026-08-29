@@ -43,6 +43,6 @@ jobs:
       - name: Commenta e chiudi la richiesta
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |                                                                                                                      
+        run: |
           gh issue comment ${{ github.event.issue.number }} --body "$(cat risultato.txt)"
           gh issue close ${{ github.event.issue.number }}
