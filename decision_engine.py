@@ -249,10 +249,11 @@ def _ultimo_prezzo(df: pd.DataFrame, fino_a: pd.Timestamp) -> float | None:
     serie = df["Close"]
     if isinstance(serie, pd.DataFrame):
         serie = serie.iloc[:, 0]
-    serie_filtrata = serie[serie.index <= fino_a]
+    serie_filtrata = serie[serie.index <= fino_a].dropna()  # scarta eventuali prezzi mancanti/incompleti
     if serie_filtrata.empty:
         return None
-    return float(serie_filtrata.iloc[-1])
+    valore = float(serie_filtrata.iloc[-1])
+    return None if pd.isna(valore) else valore
 
 
 def _valore_posizioni(stato: StatoBot, dati_per_ticker: dict[str, pd.DataFrame], oggi: pd.Timestamp) -> float:
