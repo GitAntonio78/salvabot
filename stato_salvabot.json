@@ -11,7 +11,7 @@
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 30.404087226687157,
+    "saldo_investito": NaN,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -19,7 +19,8 @@
       30.0,
       30.043293487066318,
       30.404087226687157,
-      30.404087226687157
+      30.404087226687157,
+      NaN
     ],
     "storico_eventi": [
       {
@@ -31,6 +32,10 @@
       {
         "data_ora": "28/08 19:26",
         "saldo": 30.4
+      },
+      {
+        "data_ora": "29/08 07:20",
+        "saldo": NaN
       }
     ]
   }
