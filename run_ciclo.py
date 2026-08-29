@@ -67,6 +67,13 @@ def esegui_singolo_ciclo(
 
     valore_posizioni = decision_engine._valore_posizioni(stato, dati_per_ticker, oggi)
     saldo_operativo = stato.saldo_disponibile + valore_posizioni
+
+    # Ultima rete di sicurezza: non salvare mai un saldo non valido (NaN).
+    # Se capitasse per qualche motivo imprevisto, si tiene l'ultimo saldo noto
+    # invece di corrompere lo storico con un dato inutilizzabile.
+    if pd.isna(saldo_operativo):
+        saldo_operativo = portafoglio.saldo_investito
+
     portafoglio.saldo_investito = saldo_operativo
     portafoglio.registra_saldo_giornaliero(saldo_operativo)
     portafoglio.registra_punto(datetime.now().strftime("%d/%m %H:%M"), saldo_operativo)
