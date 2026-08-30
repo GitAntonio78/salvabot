@@ -36,9 +36,17 @@ class Portafoglio:
     def registra_punto(self, data_ora: str, saldo: float) -> None:
         """
         Aggiunge un punto per il grafico (data/ora + saldo di quel ciclo).
-        Tiene solo gli ultimi 10: il più vecchio scompare quando arriva un nuovo punto.
+        Un solo punto per giorno: se Salvabot gira piu' volte nello stesso
+        giorno (es. il passaggio di riserva), aggiorna il punto di oggi
+        invece di aggiungerne uno nuovo - cosi' i 10 punti restano sempre
+        10 giorni reali, non 10 passaggi.
+        Tiene solo gli ultimi 10 giorni: il più vecchio scompare quando ne arriva uno nuovo.
         """
-        self.storico_punti.append({"data_ora": data_ora, "saldo": round(saldo, 2)})
+        data_di_oggi = data_ora.split(" ")[0]  # "28/08 17:47" -> "28/08"
+        if self.storico_punti and self.storico_punti[-1]["data_ora"].split(" ")[0] == data_di_oggi:
+            self.storico_punti[-1] = {"data_ora": data_ora, "saldo": round(saldo, 2)}
+        else:
+            self.storico_punti.append({"data_ora": data_ora, "saldo": round(saldo, 2)})
         self.storico_punti = self.storico_punti[-10:]
 
     def giorni_di_trend(self) -> tuple[str, int]:
