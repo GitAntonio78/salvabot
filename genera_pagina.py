@@ -92,7 +92,10 @@ def _sparkline(storico_punti: list[dict], colore: str = "#1e7d3c") -> str:
     """
     Piccolo grafico a linea con puntini (SVG), sugli ultimi 10 passaggi di
     Salvabot (storico_punti e' gia' limitato a 10 a monte, nel portafoglio).
+    Linea marcata + area colorata sotto, cosi' la salita/discesa si vede
+    bene anche su schermo piccolo e con variazioni minime.
     """
+    storico_punti = [p for p in storico_punti if p["saldo"] == p["saldo"]]  # scarta eventuali NaN (un NaN non e' mai uguale a se stesso)
     if len(storico_punti) < 2:
         return '<p class="muto" style="margin-top:8px;">Non ci sono ancora abbastanza dati per un grafico.</p>'
 
@@ -104,18 +107,20 @@ def _sparkline(storico_punti: list[dict], colore: str = "#1e7d3c") -> str:
     coordinate = []
     for i, v in enumerate(valori):
         x = (i / (len(valori) - 1)) * larghezza
-        y = altezza - ((v - minimo) / intervallo) * (altezza - 14) - 7
+        y = altezza - ((v - minimo) / intervallo) * (altezza - 20) - 10
         coordinate.append((x, y))
 
     polilinea = " ".join(f"{x:.1f},{y:.1f}" for x, y in coordinate)
+    punti_area = f"0,{altezza} " + polilinea + f" {larghezza:.1f},{altezza}"
     puntini = "".join(
-        f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3.2" fill="{colore}"/>' for x, y in coordinate
+        f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.4" fill="{colore}"/>' for x, y in coordinate
     )
 
     return (
         f'<svg viewBox="0 0 {larghezza} {altezza}" width="100%" height="{altezza}" '
-        f'preserveAspectRatio="none" style="margin-top: 10px;">'
-        f'<polyline points="{polilinea}" fill="none" stroke="{colore}" stroke-width="2" '
+        f'preserveAspectRatio="none" style="margin-top: 10px; overflow: visible;">'
+        f'<polygon points="{punti_area}" fill="{colore}" opacity="0.12"/>'
+        f'<polyline points="{polilinea}" fill="none" stroke="{colore}" stroke-width="3" '
         f'stroke-linecap="round" stroke-linejoin="round"/>'
         f'{puntini}'
         f'</svg>'
@@ -124,6 +129,7 @@ def _sparkline(storico_punti: list[dict], colore: str = "#1e7d3c") -> str:
 
 def _elenco_punti(storico_punti: list[dict]) -> str:
     """Elenco leggibile degli ultimi passaggi (data/ora + saldo), dal più recente."""
+    storico_punti = [p for p in storico_punti if p["saldo"] == p["saldo"]]  # scarta eventuali NaN
     if not storico_punti:
         return ""
     righe = "".join(
