@@ -49,8 +49,23 @@ def invia(
     richiede_conferma: bool = False,
     percorso: Path = FILE_NOTIFICHE_DEFAULT,
 ) -> Notifica:
-    """Aggiunge una nuova notifica alla coda persistente."""
+    """
+    Aggiunge una notifica alla coda persistente. Se esiste gia' una
+    notifica NON LETTA dello stesso tipo (es. il ciclo e' girato piu'
+    volte nello stesso giorno, magari lanciato a mano), aggiorna quella
+    esistente invece di crearne una seconda - cosi' resta sempre una
+    sola proposta attiva per tipo, con la data/ora piu' recente.
+    """
     notifiche = _carica_tutte(percorso)
+
+    for n in notifiche:
+        if n["tipo"] == tipo and not n["letta"]:
+            n["messaggio"] = messaggio
+            n["data"] = data
+            n["richiede_conferma"] = richiede_conferma
+            _salva_tutte(notifiche, percorso)
+            return Notifica(**n)
+
     prossimo_id = (max((n["id"] for n in notifiche), default=0)) + 1
     nuova = Notifica(tipo=tipo, messaggio=messaggio, data=data, richiede_conferma=richiede_conferma, id=prossimo_id)
     notifiche.append(asdict(nuova))
