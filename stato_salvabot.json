@@ -11,7 +11,7 @@
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 30.24533985304768,
+    "saldo_investito": 30.151532710007682,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -44,7 +44,8 @@
       29.985567920098635,
       29.83042650195616,
       30.0,
-      30.24533985304768
+      30.24533985304768,
+      30.151532710007682
     ],
     "storico_eventi": [
       {
@@ -53,10 +54,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "08/09 17:49",
-        "saldo": 30.23
-      },
       {
         "data_ora": "09/09 17:49",
         "saldo": 29.99
@@ -92,6 +89,10 @@
       {
         "data_ora": "17/09 17:50",
         "saldo": 30.25
+      },
+      {
+        "data_ora": "18/09 17:48",
+        "saldo": 30.15
       }
     ]
   }
