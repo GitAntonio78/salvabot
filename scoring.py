@@ -87,11 +87,20 @@ def calcola_scoring(prezzi: pd.Series, soglia_volatilita: float = 0.20) -> dict:
 
 
 def valuta_paniere(dati_per_ticker: dict[str, pd.DataFrame]) -> dict[str, dict]:
-    """Applica calcola_scoring a ogni ETF del paniere."""
+    """
+    Applica calcola_scoring a ogni asset del paniere, usando la soglia di
+    volatilità giusta per la sua categoria (crypto/azioni sono naturalmente
+    più volatili di un ETF, quindi servirebbe una soglia diversa perché
+    possano mai risultare "convincenti").
+    """
+    import config  # import locale per evitare dipendenze circolari
+
     risultati = {}
     for ticker, df in dati_per_ticker.items():
         colonna_prezzo = df["Close"]
         if isinstance(colonna_prezzo, pd.DataFrame):  # yfinance a volte restituisce multi-colonna
             colonna_prezzo = colonna_prezzo.iloc[:, 0]
-        risultati[ticker] = calcola_scoring(colonna_prezzo)
+        categoria = config.categoria_di(ticker)
+        soglia = config.SOGLIA_VOLATILITA_RISCHIOSO if categoria == "rischioso" else config.SOGLIA_VOLATILITA_ETF
+        risultati[ticker] = calcola_scoring(colonna_prezzo, soglia_volatilita=soglia)
     return risultati
