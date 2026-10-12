@@ -1,0 +1,54 @@
+name: Salvabot - controllo di sicurezza
+
+# CICLO DI SICUREZZA: 3 volte al giorno, SOLO sulle posizioni crypto/azioni.
+# Controlla stop-loss/take-profit (soglie dedicate) e valuta un eventuale cambio.
+# Non apre mai nuove posizioni: quello resta compito del ciclo principale serale.
+# Insieme al ciclo principale fa 4 controlli al giorno (il "X/4" mostrato sulla pagina).
+#
+# Orari in UTC, mattina fissa; gli altri due seguono l'ora di Wall Street
+# (estate = marzo-ottobre, inverno = novembre-febbraio). Minuti "storti" (:07) per
+# evitare l'orario di punta di GitHub, che altrimenti puo' ritardare o saltare i lavori.
+on:
+  schedule:
+    - cron: "15 7 * * *"           # mattina: dopo la notte (sessione asiatica, crypto 24/7)
+    - cron: "7 14 * 3-10 *"        # estate: subito dopo l'apertura di Wall Street
+    - cron: "7 15 * 11,12,1,2 *"   # inverno: subito dopo l'apertura di Wall Street
+    - cron: "7 17 * 3-10 *"        # estate: meta' sessione USA
+    - cron: "7 18 * 11,12,1,2 *"   # inverno: meta' sessione USA
+  workflow_dispatch: {}
+
+concurrency:
+  group: salvabot-stato
+  cancel-in-progress: false
+
+jobs:
+  controllo-sicurezza:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Scarica il codice del repository
+        uses: actions/checkout@v4
+
+      - name: Prepara Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installa le dipendenze
+        run: pip install -r requirements.txt
+
+      - name: Esegui il controllo di sicurezza
+        run: python3 run_sicurezza.py
+
+      - name: Genera la pagina web aggiornata
+        run: python3 genera_pagina.py
+
+      - name: Salva stato e pagina aggiornati nel repository
+        run: |
+          git config user.name "salvabot-bot"
+          git config user.email "salvabot-bot@users.noreply.github.com"
+          git add $(ls stato_salvabot.json impostazioni_salvabot.json notifiche_salvabot.json docs/index.html 2>/dev/null)
+          git diff --quiet --cached || git commit -m "Controllo di sicurezza del $(date +'%Y-%m-%d %H:%M')"
+          git pull --rebase
+          git push
