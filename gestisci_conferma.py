@@ -4,7 +4,7 @@ Gestisce una conferma/rifiuto arrivato come issue GitHub.
 Il titolo della issue e' nel formato "salvabot:<azione>:<id_notifica>"
 (generato da genera_pagina.py). Questo script:
 1. Recupera la notifica corrispondente
-2. Se e' una conferma, applica davvero la scelta (salvadanaio, espansione,
+2. Se e' una conferma, applica davvero la scelta (salvadanaio, nuova posizione,
    o una proposta di auto-valutazione)
 3. Segna la notifica come letta
 4. Rigenera la pagina web aggiornata
@@ -56,16 +56,6 @@ def gestisci(titolo_issue: str, corpo_issue: str) -> str:
                 portafoglio.applica_scelta_salvadanaio(importo)
                 state_store.salva_stato(stato, portafoglio)
                 messaggio_risultato = f"Salvadanaio aggiornato: +{importo:.2f} EUR."
-
-        elif notifica["tipo"] == "espansione":
-            importo = estrai_importo(corpo_issue, default=0.0)
-            # Nota: l'apertura vera e propria della categoria crypto/azioni
-            # richiede ancora il collegamento al broker (fase successiva).
-            # Per ora registriamo l'intenzione confermata dall'utente.
-            messaggio_risultato = (
-                f"Espansione confermata con {importo:.2f} EUR. "
-                f"Verra' attivata quando sara' collegato il broker."
-            )
 
         elif notifica["tipo"] == "autovalutazione":
             impostazioni = settings_store.carica_impostazioni()
