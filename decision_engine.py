@@ -26,6 +26,7 @@ class Posizione:
     ticker: str
     prezzo_di_carico: float
     quota_investita: float  # in euro
+    ultima_variazione_pct: float = 0.0  # variazione dall'acquisto all'ultimo controllo (per la pagina)
 
 
 @dataclass
@@ -44,13 +45,126 @@ def rileva_crash(prezzi_indice: pd.Series) -> bool:
     return variazione <= config.CRASH_SOGLIA_PCT
 
 
-def paniere_per_saldo(saldo: float) -> list[dict]:
-    """Restituisce il paniere di ETF adatto alla fascia di saldo attuale."""
-    paniere_scelto = config.PANIERE_PER_FASCIA_DI_SALDO[0][1]
+def paniere_per_saldo(saldo: float) -> list[str]:
+    """
+    Restituisce il paniere completo adatto alla fascia di saldo attuale:
+    gli ETF a scalini (come sempre) + crypto/azioni, disponibili da subito
+    senza soglia (deciso nel progetto).
+    """
+    paniere_etf = config.PANIERE_PER_FASCIA_DI_SALDO[0][1]
     for soglia_minima, ticker_list in config.PANIERE_PER_FASCIA_DI_SALDO:
         if saldo >= soglia_minima:
-            paniere_scelto = ticker_list
-    return paniere_scelto
+            paniere_etf = ticker_list
+    return paniere_etf + config.PANIERE_RISCHIOSO
+
+
+def soglie_rischio(ticker: str) -> tuple[float, float]:
+    """Restituisce (stop_loss_pct, take_profit_pct) giusti per la categoria del ticker."""
+    if config.categoria_di(ticker) == "rischioso":
+        return config.STOP_LOSS_PCT_RISCHIOSO, config.TAKE_PROFIT_PCT_RISCHIOSO
+    return config.STOP_LOSS_PCT, config.TAKE_PROFIT_PCT
+
+
+def valore_per_categoria(
+    stato: StatoBot, dati_per_ticker: dict[str, pd.DataFrame], oggi: pd.Timestamp, categoria: str
+) -> float:
+    """Somma il valore attuale delle sole posizioni di una categoria ('etf' o 'rischioso')."""
+    totale = 0.0
+    for ticker, posizione in stato.posizioni.items():
+        if config.categoria_di(ticker) != categoria:
+            continue
+        prezzo_attuale = _ultimo_prezzo(dati_per_ticker[ticker], oggi)
+        if prezzo_attuale is None:
+            totale += posizione.quota_investita
+            continue
+        variazione = (prezzo_attuale - posizione.prezzo_di_carico) / posizione.prezzo_di_carico
+        totale += posizione.quota_investita * (1 + variazione)
+    return totale
+
+
+def controlla_stop_loss_take_profit(
+    stato: StatoBot,
+    dati_per_ticker: dict[str, pd.DataFrame],
+    oggi: pd.Timestamp,
+    solo_categoria: str | None = None,
+) -> list[dict]:
+    """
+    Controlla ogni posizione aperta e vende se ha superato la soglia di
+    stop-loss o take-profit GIUSTA PER LA SUA CATEGORIA (ETF o rischioso).
+    Se 'solo_categoria' e' indicato, controlla solo le posizioni di quella
+    categoria (usato dal ciclo di sicurezza, che si occupa solo di crypto/azioni).
+    """
+    log = []
+    for ticker in list(stato.posizioni.keys()):
+        if solo_categoria is not None and config.categoria_di(ticker) != solo_categoria:
+            continue
+
+        posizione = stato.posizioni[ticker]
+        prezzo_attuale = _ultimo_prezzo(dati_per_ticker[ticker], oggi)
+        if prezzo_attuale is None:
+            continue
+
+        variazione = (prezzo_attuale - posizione.prezzo_di_carico) / posizione.prezzo_di_carico
+        stop_loss_pct, take_profit_pct = soglie_rischio(ticker)
+
+        if variazione <= stop_loss_pct:
+            valore_finale = posizione.quota_investita * (1 + variazione)
+            stato.saldo_disponibile += valore_finale
+            del stato.posizioni[ticker]
+            log.append({
+                "tipo": "stop_loss",
+                "messaggio": (
+                    f"Stop-loss su {ticker}: sceso del {variazione:.1%}, venduto. "
+                    f"Nuovo saldo: {stato.saldo_disponibile:.2f} EUR."
+                ),
+            })
+        elif variazione >= take_profit_pct:
+            valore_finale = posizione.quota_investita * (1 + variazione)
+            stato.saldo_disponibile += valore_finale
+            del stato.posizioni[ticker]
+            log.append({
+                "tipo": "take_profit",
+                "messaggio": (
+                    f"Guadagno consolidato su {ticker}: salito del {variazione:.1%}, venduto. "
+                    f"Nuovo saldo: {stato.saldo_disponibile:.2f} EUR."
+                ),
+            })
+    return log
+
+
+def _rispetta_tetto_rischio(
+    ticker_candidato: str,
+    importo: float,
+    stato: StatoBot,
+    dati_per_ticker: dict,
+    oggi: pd.Timestamp,
+    sostituisce: str | None = None,
+) -> bool:
+    """
+    True se investire 'importo' su 'ticker_candidato' NON sfora il tetto massimo
+    su crypto/azioni insieme. Un ETF non ha mai un tetto (sempre True).
+
+    'sostituisce' = ticker della posizione che verrebbe venduta per fare spazio
+    (cambio-posizione): si valuta il portafoglio DOPO lo scambio.
+    Se dopo l'operazione il candidato sarebbe l'unica posizione, il tetto non si
+    applica (a meno che TETTO_ANCHE_CON_UNA_POSIZIONE sia True).
+    """
+    if config.categoria_di(ticker_candidato) != "rischioso":
+        return True
+
+    altre_posizioni = [t for t in stato.posizioni if t != sostituisce]
+    if not altre_posizioni and not config.TETTO_ANCHE_CON_UNA_POSIZIONE:
+        return True
+
+    saldo_totale = stato.saldo_disponibile + _valore_posizioni(stato, dati_per_ticker, oggi)
+    if saldo_totale <= 0:
+        return True
+
+    valore_rischioso = valore_per_categoria(stato, dati_per_ticker, oggi, "rischioso")
+    if sostituisce is not None and config.categoria_di(sostituisce) == "rischioso":
+        # la posizione venduta libera la sua quota rischiosa (importo e' gia' il suo valore)
+        valore_rischioso -= importo
+    return valore_rischioso + importo <= config.TETTO_RISCHIOSO_PCT * saldo_totale
 
 
 def valuta_switch(
@@ -58,12 +172,14 @@ def valuta_switch(
     dati_per_ticker: dict[str, pd.DataFrame],
     oggi: pd.Timestamp,
     cautela: str,
+    solo_categoria: str | None = None,
 ) -> list[dict]:
     """
-    Per ogni posizione aperta, controlla se esiste un'alternativa nettamente
-    migliore (almeno SOGLIA_DIFFERENZA_CRITERI_SWITCH criteri favorevoli in
-    piu'). Cambia SOLO se il guadagno gia' maturato in euro sulla posizione
-    attuale copre la stima delle commissioni del cambio (vendita + riacquisto).
+    Per ogni posizione aperta (o solo quelle di 'solo_categoria', se indicato),
+    controlla se esiste un'alternativa nettamente migliore (almeno
+    SOGLIA_DIFFERENZA_CRITERI_SWITCH criteri favorevoli in piu'). Cambia SOLO
+    se il guadagno gia' maturato in euro sulla posizione attuale copre la
+    stima delle commissioni del cambio, E se il tetto di rischio lo permette.
     Altrimenti resta fermo, anche se l'alternativa sembra migliore.
     """
     eventi = []
@@ -79,6 +195,9 @@ def valuta_switch(
     costo_stimato_switch = 2 * config.COMMISSIONE_STIMATA_EUR
 
     for ticker in list(stato.posizioni.keys()):
+        if solo_categoria is not None and config.categoria_di(ticker) != solo_categoria:
+            continue
+
         posizione = stato.posizioni[ticker]
         prezzo_attuale = _ultimo_prezzo(dati_per_ticker[ticker], oggi)
         if prezzo_attuale is None:
@@ -86,6 +205,7 @@ def valuta_switch(
 
         variazione = (prezzo_attuale - posizione.prezzo_di_carico) / posizione.prezzo_di_carico
         punteggio_attuale = punteggi.get(ticker, {}).get("criteri_favorevoli", 0)
+        valore_attuale_posizione = posizione.quota_investita * (1 + variazione)
 
         candidati_migliori = [
             (t, d) for t, d in punteggi.items()
@@ -93,6 +213,7 @@ def valuta_switch(
             and t not in stato.posizioni
             and d["criteri_favorevoli"] >= soglia_minima_criteri
             and d["criteri_favorevoli"] >= punteggio_attuale + config.SOGLIA_DIFFERENZA_CRITERI_SWITCH
+            and _rispetta_tetto_rischio(t, valore_attuale_posizione, stato, dati_per_ticker, oggi, sostituisce=ticker)
         ]
         if not candidati_migliori:
             continue
@@ -159,36 +280,7 @@ def decidi_ciclo(
         in_raffreddamento = True
 
     # --- 1. Gestione posizioni aperte: stop-loss / take-profit (sempre attivo) ---
-    for ticker in list(stato.posizioni.keys()):
-        posizione = stato.posizioni[ticker]
-        prezzo_attuale = _ultimo_prezzo(dati_per_ticker[ticker], oggi)
-        if prezzo_attuale is None:
-            continue
-
-        variazione = (prezzo_attuale - posizione.prezzo_di_carico) / posizione.prezzo_di_carico
-
-        if variazione <= config.STOP_LOSS_PCT:
-            valore_finale = posizione.quota_investita * (1 + variazione)
-            stato.saldo_disponibile += valore_finale
-            del stato.posizioni[ticker]
-            log.append({
-                "tipo": "stop_loss",
-                "messaggio": (
-                    f"Stop-loss su {ticker}: sceso del {variazione:.1%}, venduto. "
-                    f"Nuovo saldo: {stato.saldo_disponibile:.2f} EUR."
-                ),
-            })
-        elif variazione >= config.TAKE_PROFIT_PCT:
-            valore_finale = posizione.quota_investita * (1 + variazione)
-            stato.saldo_disponibile += valore_finale
-            del stato.posizioni[ticker]
-            log.append({
-                "tipo": "take_profit",
-                "messaggio": (
-                    f"Guadagno consolidato su {ticker}: salito del {variazione:.1%}, venduto. "
-                    f"Nuovo saldo: {stato.saldo_disponibile:.2f} EUR."
-                ),
-            })
+    log.extend(controlla_stop_loss_take_profit(stato, dati_per_ticker, oggi))
 
     # --- 2. Se in raffreddamento, ci si ferma qui: nessun nuovo acquisto o cambio ---
     if in_raffreddamento:
@@ -210,11 +302,14 @@ def decidi_ciclo(
 
     soglia_minima_criteri = config.LIVELLI_CAUTELA.get(cautela, 2)
 
-    # Scegli il miglior candidato non ancora in portafoglio
+    # Scegli il miglior candidato non ancora in portafoglio, rispettando il tetto di rischio
+    # (un candidato crypto/azione che sforerebbe il tetto viene scartato: si ricade sugli ETF rimasti)
     candidati = [
         (ticker, dettagli)
         for ticker, dettagli in punteggi.items()
-        if ticker not in stato.posizioni and dettagli["criteri_favorevoli"] >= soglia_minima_criteri
+        if ticker not in stato.posizioni
+        and dettagli["criteri_favorevoli"] >= soglia_minima_criteri
+        and _rispetta_tetto_rischio(ticker, stato.saldo_disponibile, stato, dati_per_ticker, oggi)
     ]
 
     if not candidati:
@@ -243,6 +338,17 @@ def decidi_ciclo(
     })
 
     return log
+
+
+def aggiorna_variazioni_posizioni(
+    stato: StatoBot, dati_per_ticker: dict[str, pd.DataFrame], oggi: pd.Timestamp
+) -> None:
+    """Aggiorna su ogni posizione la variazione % dall'acquisto (mostrata sulla pagina)."""
+    for ticker, posizione in stato.posizioni.items():
+        prezzo_attuale = _ultimo_prezzo(dati_per_ticker[ticker], oggi)
+        if prezzo_attuale is None:
+            continue
+        posizione.ultima_variazione_pct = (prezzo_attuale - posizione.prezzo_di_carico) / posizione.prezzo_di_carico
 
 
 def _ultimo_prezzo(df: pd.DataFrame, fino_a: pd.Timestamp) -> float | None:
