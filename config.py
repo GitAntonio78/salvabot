@@ -9,9 +9,19 @@ partenza ragionevole da affinare osservando i risultati della demo.
 # --- Capitale iniziale (impostabile dall'utente in fase di setup) ---
 SALDO_INIZIALE_DEFAULT = 30.0
 
-# --- Gestione del rischio (le uniche due regole, come deciso nel progetto) ---
+# --- Gestione del rischio per gli ETF ---
 STOP_LOSS_PCT = -0.10          # vende se un ETF scende del 10% dal prezzo di carico
 TAKE_PROFIT_PCT = 0.15         # consolida se un ETF sale del 15% dal prezzo di carico
+
+# --- Gestione del rischio per crypto/azioni (più ampia: si muovono di più) ---
+STOP_LOSS_PCT_RISCHIOSO = -0.20
+TAKE_PROFIT_PCT_RISCHIOSO = 0.30
+
+# --- Soglia di volatilità nello scoring, diversa per categoria ---
+# (la volatilità tipica di crypto/azioni è naturalmente più alta di un ETF,
+# quindi servono soglie diverse perché possano mai risultare "convincenti")
+SOGLIA_VOLATILITA_ETF = 0.20
+SOGLIA_VOLATILITA_RISCHIOSO = 0.80
 
 # --- Livello di cautela: quanti indicatori su 3 devono essere allineati
 #     prima che Salvabot decida di investire invece di aspettare ---
@@ -38,10 +48,35 @@ PANIERE_PER_FASCIA_DI_SALDO = [
     (300,  ["VWCE.DE", "AGGH.DE", "MEUD.PA", "IS3N.DE"]),        # + mercati emergenti
 ]
 
-# --- Soglie di "maturità" del saldo (non tempo fisso) ---
-# Sopra queste soglie, Salvabot PUO' proporre (mai imporre) un passo successivo.
+# --- Soglia di "maturità" del saldo per il salvadanaio (non tempo fisso) ---
 SOGLIA_PROPOSTA_SALVADANAIO = 300.0   # da qui in poi può proporre di mettere via una parte
-SOGLIA_PROPOSTA_ESPANSIONE = 300.0    # da qui in poi può proporre di provare crypto/azioni
+
+# --- Crypto e azioni: disponibili da subito, nessuna soglia (deciso nel progetto) ---
+# Rivedere periodicamente questa lista insieme all'utente in base a come si muove il mercato.
+PANIERE_RISCHIOSO = ["BTC-USD", "ETH-USD", "AAPL", "MSFT", "GOOGL", "AMZN"]
+
+# Categoria di ogni ticker: 'etf' o 'rischioso' (crypto/azione). Usata per scegliere
+# le soglie di stop-loss/take-profit/volatilità giuste e per il tetto di rischio.
+def categoria_di(ticker: str) -> str:
+    return "rischioso" if ticker in PANIERE_RISCHIOSO else "etf"
+
+def etichetta_di(ticker: str) -> str:
+    """Etichetta leggibile da mostrare sulla pagina: 'ETF', 'Crypto' o 'Azione'."""
+    if categoria_di(ticker) == "etf":
+        return "ETF"
+    return "Crypto" if ticker.endswith("-USD") else "Azione"
+
+# --- Tetto massimo su crypto/azioni insieme, rispetto al saldo totale ---
+TETTO_RISCHIOSO_PCT = 0.50   # se raggiunto, Salvabot sceglie solo tra gli ETF rimasti
+# Con UNA sola posizione in portafoglio, Salvabot investe tutto il capitale su quella:
+# il tetto del 50% la renderebbe impossibile per crypto/azioni (100% > 50%).
+# False = il tetto si applica solo quando c'e' gia' almeno un'altra posizione (come concordato).
+# True  = il tetto vale sempre: finche' c'e' una sola posizione, Salvabot scegliera' solo ETF.
+TETTO_ANCHE_CON_UNA_POSIZIONE = False
+
+# --- Ciclo di sicurezza (solo su crypto/azioni): quanti controlli mostrare a scorrimento ---
+FINESTRA_CONTROLLI_SICUREZZA = 4
+CONTROLLI_GIORNALIERI_ATTESI = 4   # 3 di sicurezza + il ciclo principale serale (mostrato come "X/4")
 
 # --- Repository GitHub (serve per generare i link di conferma nella pagina web) ---
 # Sostituisci con "tuonomeutente/nomerepository" una volta creato il repository.
