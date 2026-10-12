@@ -47,7 +47,9 @@ def esegui_singolo_ciclo(
     else:
         stato, portafoglio = stato_precedente
 
-    tutti_i_ticker = sorted({t for _, lista in config.PANIERE_PER_FASCIA_DI_SALDO for t in lista})
+    tutti_i_ticker = sorted(
+        {t for _, lista in config.PANIERE_PER_FASCIA_DI_SALDO for t in lista} | set(config.PANIERE_RISCHIOSO)
+    )
     dati_per_ticker = data_provider.scarica_paniere(tutti_i_ticker, giorni=400)
 
     serie_indice = dati_per_ticker[ticker_indice_riferimento]["Close"]
@@ -75,8 +77,12 @@ def esegui_singolo_ciclo(
         saldo_operativo = portafoglio.saldo_investito
 
     portafoglio.saldo_investito = saldo_operativo
+    decision_engine.aggiorna_variazioni_posizioni(stato, dati_per_ticker, oggi)
+
+    evento_rilevante = any(e["tipo"] in ("stop_loss", "take_profit", "switch", "investito") for e in log)
     portafoglio.registra_saldo_giornaliero(saldo_operativo)
-    portafoglio.registra_punto(datetime.now().strftime("%d/%m %H:%M"), saldo_operativo)
+    portafoglio.registra_punto(datetime.now().strftime("%d/%m %H:%M"), saldo_operativo, evento=evento_rilevante)
+    portafoglio.registra_controllo_giornata(datetime.now().strftime("%d/%m"))
 
     eventi = []
     for evento in log:
@@ -94,14 +100,6 @@ def esegui_singolo_ciclo(
             f"vuoi mettere via una parte nel salvadanaio?"
         )
         notifications.invia("salvadanaio", msg, str(oggi.date()), richiede_conferma=True)
-        eventi.append(f"[proposta] {msg}")
-
-    if portafoglio.puo_proporre_espansione():
-        msg = (
-            f"Saldo adeguato ({saldo_operativo:.2f} EUR): "
-            f"vuoi che provi anche crypto o azioni con una piccola quota?"
-        )
-        notifications.invia("espansione", msg, str(oggi.date()), richiede_conferma=True)
         eventi.append(f"[proposta] {msg}")
 
     if portafoglio.puo_proporre_nuova_posizione(impostazioni["POSIZIONI_CONSENTITE"]):
