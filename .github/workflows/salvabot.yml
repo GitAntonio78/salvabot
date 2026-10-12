@@ -1,24 +1,29 @@
 name: Salvabot - ciclo giornaliero
 
-# Lancia Salvabot da solo, ogni giorno, senza bisogno del tuo PC o telefono acceso.
-# "cron" e' il modo standard per programmare un orario: qui e' impostato
-# alle 07:00 UTC (le 08:00/09:00 in Italia, a seconda dell'ora legale).
+# CICLO PRINCIPALE: una volta al giorno, dopo la chiusura di Wall Street.
+# Analizza tutto il paniere (ETF, crypto, azioni), decide se aprire/cambiare posizioni,
+# gestisce le proposte (salvadanaio, nuova posizione) e aggiorna la pagina.
+#
+# Gli orari sono in UTC e GitHub NON gestisce l'ora legale: per questo ci sono due righe,
+# una per i mesi "estivi" (marzo-ottobre) e una per quelli "invernali" (novembre-febbraio).
+# Approssimazione a livello di mese: per 1-2 settimane l'anno, a cavallo del cambio ora,
+# lo scarto puo' essere di un'ora. Minuti "storti" (:37) per evitare l'orario di punta di GitHub.
 on:
   schedule:
-    # Un solo passaggio al giorno, dopo la chiusura dei mercati europei
-    # (Francoforte/Milano chiudono alle 17:30 italiane) - cosi' il prezzo
-    # di chiusura e' sempre gia' definitivo, invece di girare in apertura
-    # quando i dati del giorno sono ancora incompleti.
-    # 17:45 UTC = 18:45 in inverno / 19:45 in estate (ora italiana), sempre
-    # con abbondante margine dopo la chiusura in entrambe le stagioni.
-    - cron: "45 17 * * *"
-  workflow_dispatch: {}  # permette anche di lanciarlo a mano dal sito di GitHub, per test
+    - cron: "37 20 * 3-10 *"       # estate: 22:37 in Italia, ~40 minuti dopo la chiusura di Wall Street
+    - cron: "37 21 * 11,12,1,2 *"  # inverno: 22:37 in Italia, ~40 minuti dopo la chiusura di Wall Street
+  workflow_dispatch: {}
+
+# Mai due lavori insieme: scrivono gli stessi file di stato, si mettono in coda.
+concurrency:
+  group: salvabot-stato
+  cancel-in-progress: false
 
 jobs:
-  ciclo-salvabot:
+  ciclo-principale:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # serve per poter salvare lo stato aggiornato nel repository
+      contents: write
     steps:
       - name: Scarica il codice del repository
         uses: actions/checkout@v4
@@ -31,7 +36,7 @@ jobs:
       - name: Installa le dipendenze
         run: pip install -r requirements.txt
 
-      - name: Esegui il ciclo di Salvabot
+      - name: Esegui il ciclo principale di Salvabot
         run: python3 run_ciclo.py --saldo 30
 
       - name: Genera la pagina web aggiornata
@@ -42,5 +47,6 @@ jobs:
           git config user.name "salvabot-bot"
           git config user.email "salvabot-bot@users.noreply.github.com"
           git add $(ls stato_salvabot.json impostazioni_salvabot.json notifiche_salvabot.json docs/index.html 2>/dev/null)
-          git diff --quiet --cached || git commit -m "Ciclo automatico del $(date +'%Y-%m-%d')"
+          git diff --quiet --cached || git commit -m "Ciclo principale del $(date +'%Y-%m-%d')"
+          git pull --rebase
           git push
