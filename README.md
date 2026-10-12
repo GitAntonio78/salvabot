@@ -1,94 +1,63 @@
-# Salvabot — motore decisionale (versione demo)
+# Salvabot
 
-Questa è la prima versione funzionante del "cervello" di Salvabot: analizza
-un paniere di ETF, decide se investire o aspettare, e gestisce automaticamente
-stop-loss e take-profit. È pensata per girare in **demo**, senza toccare soldi
-veri e senza bisogno di un broker collegato.
+Bot di investimento paziente ("stile tartaruga"), in **demo** (nessun soldo vero, nessun broker collegato).
+Gira da solo su GitHub Actions e si controlla da una pagina web, anche da smartphone.
 
-## Due modi di far girare Salvabot
+## Cosa fa
 
-- **`main.py`** — demo su dati storici (backtest): utile per *testare* come si sarebbe comportata la strategia nel passato, non salva nulla tra un'esecuzione e l'altra.
-- **`run_ciclo.py`** — esegue **un singolo ciclo operativo** con i dati più recenti, **salvando lo stato** (saldo, posizioni, salvadanaio) su file. Lanciandolo di nuovo, riparte esattamente da dove aveva lasciato. È questo il file pensato per essere eseguito periodicamente (es. una volta al giorno) una volta che sarà collegato a un server.
+- Analizza un paniere di **ETF, crypto (Bitcoin, Ethereum) e azioni (Apple, Microsoft, Google, Amazon)**
+  e sceglie in base al punteggio del momento (trend, volatilità, RSI), restando fermo se non è convinto.
+- **Soglie diverse per categoria**: ETF stop-loss -10% / take-profit +15%; crypto/azioni -20% / +30%.
+- **Tetto del 50%** su crypto/azioni insieme (si applica quando in portafoglio c'è già un'altra posizione;
+  vedi `TETTO_ANCHE_CON_UNA_POSIZIONE` in `config.py`).
+- **Cambio posizione** se trova un'alternativa nettamente migliore, ma solo se il guadagno copre le
+  commissioni stimate del cambio.
+- **Posizioni multiple** proposte a soglia (150€ per la 2ª, 400€ per la 3ª), sempre con la tua conferma.
+- **Salvadanaio**, **auto-valutazione** (propone modifiche, non le applica mai da sola), **modalità difensiva** sui crolli.
 
-```bash
-python3 run_ciclo.py --saldo 30
-python3 run_ciclo.py   # lanci successivi: ricarica lo stato salvato automaticamente
-```
+## Due cicli
 
-Lo stato viene scritto in `stato_salvabot.json` (cancellalo se vuoi ripartire da zero).
+| Ciclo | Script | Quando (UTC, stagionale) | Cosa fa |
+|---|---|---|---|
+| Principale | `run_ciclo.py` | 1 volta al giorno, dopo la chiusura di Wall Street | Analisi completa, nuove posizioni, proposte |
+| Sicurezza | `run_sicurezza.py` | 3 volte al giorno | Solo crypto/azioni: stop-loss, take-profit, cambio. **Non apre mai nuove posizioni** |
 
-## Come avviarla (demo su storico)
+Insieme fanno i "4 controlli al giorno" mostrati sulla pagina. Gli orari seguono l'ora legale con due
+righe per mese (marzo-ottobre / novembre-febbraio): per 1-2 settimane l'anno, a cavallo del cambio ora,
+può esserci uno scarto di un'ora.
 
-```bash
-pip install -r requirements.txt
-python3 main.py
-```
-
-Parametri opzionali:
-
-```bash
-python3 main.py --saldo 50 --cautela prudente --giorni 600
-```
-
-- `--saldo`: capitale di partenza della demo (default 30)
-- `--cautela`: `prudente` / `equilibrato` / `dinamico` — quanti indicatori su 3
-  devono essere favorevoli prima che Salvabot decida di investire
-- `--giorni`: quanti giorni di storico usare per la simulazione
-
-## Dati reali o sintetici?
-
-Lo script prova prima a scaricare dati veri con `yfinance`. Se non c'è
-connessione a internet (come in questo ambiente di sviluppo) o il pacchetto
-non è installato, usa automaticamente dati sintetici generati con un random
-walk, così puoi comunque vedere e testare tutta la logica del bot offline.
-Il risultato indica sempre se ha usato dati reali o sintetici.
-
-**Importante**: con i dati sintetici puoi verificare che la *logica* funzioni
-(decisioni, stop-loss, pazienza), ma i numeri di rendimento non hanno alcun
-significato reale — vanno letti solo con dati veri, con una connessione
-internet attiva.
-
-## Struttura dei file
+## File
 
 | File | Cosa fa |
 |---|---|
-| `config.py` | Tutti i parametri modificabili (stop-loss, take-profit, soglie, panieri per fascia di saldo) |
-| `data_provider.py` | Scarica i dati di mercato (yfinance) o li genera sinteticamente |
-| `scoring.py` | Calcola volatilità, drawdown, trend, RSI per ogni ETF |
-| `decision_engine.py` | Decide investi/aspetta/vendi, applica stop-loss e modalità difensiva |
-| `portfolio.py` | Portafoglio virtuale: saldo composto, salvadanaio, trend di crescita/calo |
-| `state_store.py` | Salva/ricarica lo stato completo di Salvabot su file, tra un'esecuzione e l'altra |
-| `settings_store.py` | Salva/ricarica le impostazioni modificabili (stop-loss, take-profit, cautela), separate dai default |
-| `notifications.py` | Coda persistente di notifiche (proposte, allarmi) — pronta per essere letta da una futura app |
-| `self_evaluation.py` | Analizza i pattern recenti e propone modifiche; se confermate, le salva tramite `settings_store` |
-| `simulator.py` | Fa girare tutto ciclo per ciclo su una serie storica (per test/backtest) |
-| `run_ciclo.py` | Esegue un singolo ciclo operativo reale: carica impostazioni e stato, decide, salva, invia notifiche |
-| `genera_pagina.py` | Genera `docs/index.html`: una pagina web semplice, leggibile da telefono, con saldo/salvadanaio/notifiche |
-| `.github/workflows/salvabot.yml` | Il workflow che fa girare tutto da solo, ogni giorno, senza bisogno del tuo PC acceso |
-| `main.py` | Punto d'ingresso a riga di comando per la demo su storico |
+| `config.py` | Tutti i parametri (soglie, paniere, tetto, categorie) |
+| `data_provider.py` | Scarica i prezzi (yfinance); dati sintetici se offline. Scarta i prezzi mancanti |
+| `scoring.py` | Volatilità, drawdown, trend, RSI (soglia di volatilità per categoria) |
+| `decision_engine.py` | Decisioni, stop-loss/take-profit per categoria, cambio, tetto, modalità difensiva |
+| `portfolio.py` | Saldo, salvadanaio, storico (10 giorni), ultimi 4 controlli, contatore giornaliero |
+| `state_store.py` / `settings_store.py` | Salvataggio di stato e impostazioni (compatibile con i file vecchi) |
+| `notifications.py` | Coda notifiche (una sola per tipo, aggiornata se si ripresenta) |
+| `self_evaluation.py` | Propone modifiche ai parametri se nota pattern anomali |
+| `run_ciclo.py` / `run_sicurezza.py` | I due cicli |
+| `genera_pagina.py` | Genera `docs/index.html` |
+| `gestisci_conferma.py` | Applica le scelte dei bottoni "Conferma"/"Non ora" |
+| `simulator.py` / `main.py` | Backtest su dati storici |
+| `.github/workflows/` | `salvabot.yml` (principale), `sicurezza.yml` (sicurezza), `gestisci_conferma.yml` (bottoni) |
 
-## Come attivare l'esecuzione automatica (gratis, senza server)
+## Aggiornare un repository già attivo
 
-1. Crea un account GitHub (gratuito) se non ne hai già uno, e crea un nuovo repository (può essere privato)
-2. Carica tutti questi file nel repository (via web, oppure con `git push` se hai già dimestichezza)
-3. Vai su **Settings → Actions → General** del repository e assicurati che sia permesso "Read and write permissions" per il workflow (serve per salvare stato/pagina aggiornati automaticamente)
-4. Vai su **Settings → Pages**, e imposta la pubblicazione dalla cartella `/docs` sul branch principale — otterrai un link tipo `https://tuonome.github.io/tuorepo/`, apribile da qualsiasi browser, anche da telefono
-5. Da quel momento, ogni giorno alle 07:00 UTC (impostabile modificando l'orario nel file `.yml`), Salvabot gira da solo e aggiorna la pagina
+1. Sostituisci i file `.py` (sono tutti compatibili con lo stato già salvato: non serve cancellare nulla).
+2. Sostituisci `.github/workflows/salvabot.yml` e `gestisci_conferma.yml`, e **crea** `.github/workflows/sicurezza.yml`
+   (su GitHub: *Add file → Create new file*, nome `.github/workflows/sicurezza.yml`).
+3. Verifica che in `config.py` `GITHUB_REPO` sia `"GitAntonio78/salvabot"`.
+4. *Actions* → lancia a mano **"Salvabot - ciclo giornaliero"** e poi **"Salvabot - controllo di sicurezza"**.
 
-Puoi anche lanciarlo manualmente subito, senza aspettare l'orario programmato: dalla scheda **Actions** del repository, seleziona il workflow "Salvabot - ciclo giornaliero" e premi "Run workflow".
+## Da ricordare (note in sospeso)
 
-## Il motore è completo
+- Rendere **privato** il repository prima di passare a soldi veri.
+- Evitare che una proposta già rifiutata venga riproposta ogni giorno se il saldo resta sopra soglia.
+- Affinare il cambio ora legale/solare (oggi approssimato per mese).
+- Rivedere ogni tanto la lista di crypto/azioni (`PANIERE_RISCHIOSO` in `config.py`).
+- Gli orari mostrati sulla pagina sono in UTC (ora del server GitHub).
 
-Con questo, il "cervello" di Salvabot copre tutto quello definito nel progetto: analisi/scoring, pazienza in ingresso, stop-loss/take-profit, modalità difensiva su crash, capitale composto, paniere a scalini per saldo, salvataggio persistente di stato e impostazioni, auto-valutazione con proposte confermabili, e una coda di notifiche reale.
-
-## Prossime fasi (fuori dal motore)
-
-1. **Server** — far girare `run_ciclo.py` in automatico ogni giorno (es. cron job) su una macchina sempre accesa
-2. **App** — l'interfaccia (mockup già progettati) che legge stato/notifiche e permette di confermare le proposte, accessibile anche da smartphone
-3. **Collegamento al broker** (Directa) per l'esecuzione reale, quando si deciderà di uscire dalla demo
-
-## Nota importante
-
-Questo è software sperimentale che, in una fase futura, potrebbe muovere
-denaro reale. Nessun rendimento è garantito. Va sempre testato a lungo in
-demo prima di qualsiasi collegamento a un conto reale.
+Software sperimentale: nessun rendimento è garantito. Non è consulenza finanziaria.
