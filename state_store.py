@@ -43,6 +43,9 @@ def salva_stato(stato: StatoBot, portafoglio: Portafoglio, percorso: Path = FILE
             "storico_saldo": portafoglio.storico_saldo,
             "storico_eventi": portafoglio.storico_eventi,
             "storico_punti": portafoglio.storico_punti,
+            "storico_controlli_sicurezza": portafoglio.storico_controlli_sicurezza,
+            "giorno_contatore_controlli": portafoglio.giorno_contatore_controlli,
+            "controlli_oggi": portafoglio.controlli_oggi,
         },
     }
 
@@ -85,6 +88,9 @@ def carica_stato(percorso: Path = FILE_STATO_DEFAULT) -> tuple[StatoBot, Portafo
         storico_saldo=pf["storico_saldo"],
         storico_eventi=pf.get("storico_eventi", []),
         storico_punti=pf.get("storico_punti", []),
+        storico_controlli_sicurezza=pf.get("storico_controlli_sicurezza", []),
+        giorno_contatore_controlli=pf.get("giorno_contatore_controlli", ""),
+        controlli_oggi=pf.get("controlli_oggi", 0),
     )
 
     return stato, portafoglio
