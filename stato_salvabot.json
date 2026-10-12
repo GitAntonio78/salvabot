@@ -70,6 +70,7 @@
       31.183403025534297,
       31.01022081935567,
       31.183403025534297,
+      31.29524820397266,
       31.29524820397266
     ],
     "storico_eventi": [
@@ -116,13 +117,18 @@
         "saldo": 31.18
       },
       {
-        "data_ora": "12/10 19:29",
+        "data_ora": "12/10 19:30",
         "saldo": 31.3,
         "evento": false
       }
     ],
-    "storico_controlli_sicurezza": [],
+    "storico_controlli_sicurezza": [
+      {
+        "data_ora": "12/10 19:30",
+        "esito": "Nessuna variazione critica."
+      }
+    ],
     "giorno_contatore_controlli": "12/10",
-    "controlli_oggi": 1
+    "controlli_oggi": 2
   }
 }
