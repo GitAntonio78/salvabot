@@ -1,9 +1,10 @@
 """
-Portafoglio virtuale (demo) e logiche di "maturità del saldo":
-proposta di salvadanaio e proposta di espansione a crypto/azioni.
+Portafoglio virtuale (demo), logiche di "maturità del saldo" (salvadanaio,
+nuove posizioni), contatore dei controlli giornalieri e cronologia del
+ciclo di sicurezza su crypto/azioni.
 
-Nessuna soglia fissa: sono valori di configurazione (config.py) da
-affinare, e in entrambi i casi Salvabot PROPONE, non impone.
+Nessuna soglia fissa dove non serve: sono valori di configurazione
+(config.py) da affinare, e Salvabot PROPONE, non impone.
 """
 
 from dataclasses import dataclass, field
@@ -18,6 +19,9 @@ class Portafoglio:
     storico_saldo: list[float] = field(default_factory=list)
     storico_eventi: list[dict] = field(default_factory=list)
     storico_punti: list[dict] = field(default_factory=list)  # ultimi 10 {data_ora, saldo}, per il grafico
+    storico_controlli_sicurezza: list[dict] = field(default_factory=list)  # ultimi N {data_ora, esito}
+    giorno_contatore_controlli: str = ""   # ultimo giorno in cui e' girato un ciclo (qualsiasi)
+    controlli_oggi: int = 0                # quanti cicli (principale o sicurezza) sono girati oggi
 
     def registra_evento(self, data: str, tipo: str) -> None:
         """
@@ -33,21 +37,44 @@ class Portafoglio:
         """Da chiamare ogni ciclo per tenere lo storico (serve per 'in crescita da N giorni')."""
         self.storico_saldo.append(saldo_operativo)
 
-    def registra_punto(self, data_ora: str, saldo: float) -> None:
+    def registra_punto(self, data_ora: str, saldo: float, evento: bool = False) -> None:
         """
         Aggiunge un punto per il grafico (data/ora + saldo di quel ciclo).
         Un solo punto per giorno: se Salvabot gira piu' volte nello stesso
-        giorno (es. il passaggio di riserva), aggiorna il punto di oggi
-        invece di aggiungerne uno nuovo - cosi' i 10 punti restano sempre
-        10 giorni reali, non 10 passaggi.
+        giorno, aggiorna il punto di oggi invece di aggiungerne uno nuovo -
+        cosi' i 10 punti restano sempre 10 giorni reali, non 10 passaggi.
+        'evento' segnala che quel giorno e' successo qualcosa di rilevante
+        (stop-loss, take-profit, cambio, nuova apertura): se un lancio
+        successivo dello stesso giorno aggiorna il punto, il segnale NON si perde.
         Tiene solo gli ultimi 10 giorni: il più vecchio scompare quando ne arriva uno nuovo.
         """
         data_di_oggi = data_ora.split(" ")[0]  # "28/08 17:47" -> "28/08"
+        punto = {"data_ora": data_ora, "saldo": round(saldo, 2), "evento": evento}
         if self.storico_punti and self.storico_punti[-1]["data_ora"].split(" ")[0] == data_di_oggi:
-            self.storico_punti[-1] = {"data_ora": data_ora, "saldo": round(saldo, 2)}
+            punto["evento"] = evento or bool(self.storico_punti[-1].get("evento", False))
+            self.storico_punti[-1] = punto
         else:
-            self.storico_punti.append({"data_ora": data_ora, "saldo": round(saldo, 2)})
+            self.storico_punti.append(punto)
         self.storico_punti = self.storico_punti[-10:]
+
+    def registra_controllo_giornata(self, data_di_oggi: str) -> None:
+        """
+        Conta quanti cicli (principale o di sicurezza) sono girati OGGI.
+        Si azzera da solo al cambio di giorno. Usato per mostrare "X/4 controlli".
+        """
+        if data_di_oggi != self.giorno_contatore_controlli:
+            self.giorno_contatore_controlli = data_di_oggi
+            self.controlli_oggi = 1
+        else:
+            self.controlli_oggi += 1
+
+    def registra_controllo_sicurezza(self, data_ora: str, esito: str) -> None:
+        """
+        Aggiunge un controllo alla finestra a scorrimento (sempre gli ultimi
+        FINESTRA_CONTROLLI_SICUREZZA, non per giorno - a differenza del grafico).
+        """
+        self.storico_controlli_sicurezza.append({"data_ora": data_ora, "esito": esito})
+        self.storico_controlli_sicurezza = self.storico_controlli_sicurezza[-config.FINESTRA_CONTROLLI_SICUREZZA:]
 
     def giorni_di_trend(self) -> tuple[str, int]:
         """Restituisce ('crescita'|'calo'|'stabile', numero di giorni consecutivi)."""
@@ -68,9 +95,6 @@ class Portafoglio:
 
     def puo_proporre_salvadanaio(self) -> bool:
         return self.saldo_investito >= config.SOGLIA_PROPOSTA_SALVADANAIO
-
-    def puo_proporre_espansione(self) -> bool:
-        return self.saldo_investito >= config.SOGLIA_PROPOSTA_ESPANSIONE
 
     def puo_proporre_nuova_posizione(self, posizioni_consentite: int) -> bool:
         """
