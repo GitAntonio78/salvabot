@@ -15,6 +15,7 @@
     "saldo_investito": 30.0,
     "salvadanaio": 0.0,
     "storico_saldo": [
+      30.0,
       30.0
     ],
     "storico_eventi": [
@@ -30,8 +31,13 @@
         "evento": true
       }
     ],
-    "storico_controlli_sicurezza": [],
+    "storico_controlli_sicurezza": [
+      {
+        "data_ora": "15/10 18:31",
+        "esito": "Nessuna variazione critica."
+      }
+    ],
     "giorno_contatore_controlli": "15/10",
-    "controlli_oggi": 1
+    "controlli_oggi": 2
   }
 }
