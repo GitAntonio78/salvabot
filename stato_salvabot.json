@@ -16,6 +16,7 @@
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
+      30.0,
       30.0
     ],
     "storico_eventi": [
@@ -26,7 +27,7 @@
     ],
     "storico_punti": [
       {
-        "data_ora": "15/10 18:31",
+        "data_ora": "15/10 20:18",
         "saldo": 30.0,
         "evento": true
       }
@@ -35,9 +36,13 @@
       {
         "data_ora": "15/10 18:31",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "15/10 20:18",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "15/10",
-    "controlli_oggi": 2
+    "controlli_oggi": 3
   }
 }
