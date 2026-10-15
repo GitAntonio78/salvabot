@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 166.3000030517578,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": 0.03788336101110625
+        "ultima_variazione_pct": 0.02333126610235757
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 31.136500830333187,
+    "saldo_investito": 30.699937983070726,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -80,7 +80,8 @@
       31.223090557103607,
       31.114851334162243,
       31.114851334162243,
-      31.136500830333187
+      31.136500830333187,
+      30.699937983070726
     ],
     "storico_eventi": [
       {
@@ -89,10 +90,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "05/10 23:21",
-        "saldo": 30.87
-      },
       {
         "data_ora": "06/10 21:53",
         "saldo": 31.31
@@ -131,13 +128,14 @@
         "data_ora": "14/10 23:24",
         "saldo": 31.14,
         "evento": false
+      },
+      {
+        "data_ora": "15/10 12:39",
+        "saldo": 30.7,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "13/10 21:48",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "14/10 12:52",
         "esito": "Nessuna variazione critica."
@@ -149,9 +147,13 @@
       {
         "data_ora": "14/10 20:38",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "15/10 12:39",
+        "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "14/10",
-    "controlli_oggi": 4
+    "giorno_contatore_controlli": "15/10",
+    "controlli_oggi": 1
   }
 }
