@@ -77,14 +77,22 @@ class Portafoglio:
         self.storico_controlli_sicurezza = self.storico_controlli_sicurezza[-config.FINESTRA_CONTROLLI_SICUREZZA:]
 
     def giorni_di_trend(self) -> tuple[str, int]:
-        """Restituisce ('crescita'|'calo'|'stabile', numero di giorni consecutivi)."""
-        if len(self.storico_saldo) < 2:
+        """
+        Restituisce ('crescita'|'calo'|'stabile', numero di giorni consecutivi).
+        Si basa sui punti GIORNALIERI (uno per giorno, gli stessi del grafico), non
+        su ogni singolo controllo: con 4 controlli al giorno, il rumore tra un
+        controllo e l'altro farebbe contraddire il badge con la variazione del giorno.
+        """
+        valori = [p["saldo"] for p in self.storico_punti if p["saldo"] == p["saldo"]]
+        if len(valori) < 2:
+            valori = [v for v in self.storico_saldo if v == v]  # stati vecchi senza punti giornalieri
+        if len(valori) < 2:
             return "stabile", 0
 
         direzione_corrente = None
         giorni = 0
-        for i in range(len(self.storico_saldo) - 1, 0, -1):
-            variazione = self.storico_saldo[i] - self.storico_saldo[i - 1]
+        for i in range(len(valori) - 1, 0, -1):
+            variazione = valori[i] - valori[i - 1]
             direzione = "crescita" if variazione > 0 else ("calo" if variazione < 0 else "stabile")
             if direzione_corrente is None:
                 direzione_corrente = direzione
