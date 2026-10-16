@@ -6,19 +6,20 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": 0.009008969604178413
+        "ultima_variazione_pct": 0.0004680111729968533
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 30.270269088125353,
+    "saldo_investito": 30.014040335189907,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
       30.0,
       30.0,
-      30.270269088125353
+      30.270269088125353,
+      30.014040335189907
     ],
     "storico_eventi": [
       {
@@ -31,6 +32,11 @@
         "data_ora": "15/10 23:14",
         "saldo": 30.27,
         "evento": true
+      },
+      {
+        "data_ora": "16/10 12:24",
+        "saldo": 30.01,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
@@ -41,9 +47,13 @@
       {
         "data_ora": "15/10 20:18",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "16/10 12:24",
+        "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "15/10",
-    "controlli_oggi": 4
+    "giorno_contatore_controlli": "16/10",
+    "controlli_oggi": 1
   }
 }
