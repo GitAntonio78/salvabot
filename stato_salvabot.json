@@ -29,6 +29,7 @@
       29.91224991350318,
       29.91224991350318,
       29.91224991350318,
+      29.91224991350318,
       29.91224991350318
     ],
     "storico_eventi": [
@@ -54,7 +55,7 @@
         "evento": false
       },
       {
-        "data_ora": "18/10 19:23",
+        "data_ora": "18/10 22:33",
         "saldo": 29.91,
         "evento": false
       }
@@ -78,6 +79,6 @@
       }
     ],
     "giorno_contatore_controlli": "18/10",
-    "controlli_oggi": 3
+    "controlli_oggi": 4
   }
 }
