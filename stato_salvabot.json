@@ -27,6 +27,7 @@
       30.0,
       30.0,
       29.91224991350318,
+      29.91224991350318,
       29.91224991350318
     ],
     "storico_eventi": [
@@ -52,16 +53,12 @@
         "evento": false
       },
       {
-        "data_ora": "18/10 12:03",
+        "data_ora": "18/10 17:16",
         "saldo": 29.91,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "17/10 11:36",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "17/10 17:03",
         "esito": "Nessuna variazione critica."
@@ -73,9 +70,13 @@
       {
         "data_ora": "18/10 12:03",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "18/10 17:16",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "18/10",
-    "controlli_oggi": 1
+    "controlli_oggi": 2
   }
 }
