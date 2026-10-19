@@ -32,6 +32,7 @@
       29.91224991350318,
       29.91224991350318,
       29.940330583882993,
+      29.989470418087603,
       29.989470418087603
     ],
     "storico_eventi": [
@@ -62,16 +63,12 @@
         "evento": false
       },
       {
-        "data_ora": "19/10 19:16",
+        "data_ora": "19/10 19:17",
         "saldo": 29.99,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "18/10 12:03",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "18/10 17:16",
         "esito": "Nessuna variazione critica."
@@ -83,12 +80,16 @@
       {
         "data_ora": "19/10 14:40",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "19/10 19:17",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "19/10",
-    "controlli_oggi": 2,
+    "controlli_oggi": 3,
     "ultima_valutazione": {
-      "data_ora": "19/10 19:16",
+      "data_ora": "19/10 19:17",
       "soglia": 2,
       "candidati": [
         {
@@ -123,7 +124,7 @@
           "ticker": "AMZN",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.397,
+          "volatilita": 0.398,
           "in_portafoglio": false
         },
         {
