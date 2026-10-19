@@ -188,7 +188,7 @@ def valuta_switch(
 
     saldo_totale = stato.saldo_disponibile + _valore_posizioni(stato, dati_per_ticker, oggi)
     paniere_attuale = paniere_per_saldo(saldo_totale)
-    dati_paniere = {t: dati_per_ticker[t] for t in paniere_attuale if t in dati_per_ticker}
+    dati_paniere = {t: _fino_a(dati_per_ticker[t], oggi) for t in paniere_attuale if t in dati_per_ticker}
     punteggi = scoring.valuta_paniere(dati_paniere)
 
     soglia_minima_criteri = config.LIVELLI_CAUTELA.get(cautela, 2)
@@ -297,7 +297,7 @@ def decidi_ciclo(
         return log
 
     paniere_attuale = paniere_per_saldo(stato.saldo_disponibile + _valore_posizioni(stato, dati_per_ticker, oggi))
-    dati_paniere = {t: dati_per_ticker[t] for t in paniere_attuale if t in dati_per_ticker}
+    dati_paniere = {t: _fino_a(dati_per_ticker[t], oggi) for t in paniere_attuale if t in dati_per_ticker}
     punteggi = scoring.valuta_paniere(dati_paniere)
 
     soglia_minima_criteri = config.LIVELLI_CAUTELA.get(cautela, 2)
@@ -338,6 +338,120 @@ def decidi_ciclo(
     })
 
     return log
+
+
+def _fino_a(df: pd.DataFrame, oggi: pd.Timestamp) -> pd.DataFrame:
+    """Solo i dati fino alla data di riferimento: lo scoring non deve mai vedere il futuro."""
+    return df.loc[df.index <= oggi]
+
+
+def data_piu_recente(dati_per_ticker: dict[str, pd.DataFrame]) -> pd.Timestamp:
+    """
+    L'ultima data per cui esiste almeno un prezzo valido, tra TUTTI i ticker.
+    Serve come "oggi" dei cicli: usare solo il calendario degli ETF farebbe
+    prezzare le crypto con il prezzo di venerdi' anche nel fine settimana.
+    """
+    ultime = []
+    for df in dati_per_ticker.values():
+        serie = df["Close"]
+        if isinstance(serie, pd.DataFrame):
+            serie = serie.iloc[:, 0]
+        serie = serie.dropna()
+        if not serie.empty:
+            ultime.append(serie.index[-1])
+    if not ultime:
+        raise RuntimeError("Nessun dato di mercato disponibile: ciclo saltato.")
+    return max(ultime)
+
+
+def fotografia_valutazione(
+    stato: StatoBot,
+    dati_per_ticker: dict[str, pd.DataFrame],
+    oggi: pd.Timestamp,
+    cautela: str,
+    posizioni_consentite: int,
+    data_ora: str,
+) -> dict:
+    """
+    "Cosa sta valutando Salvabot": il punteggio (criteri favorevoli su 3) di ogni
+    candidato del paniere, in ordine di preferenza, piu' una nota in parole semplici
+    che spiega perche' resta fermo o cosa farebbe. Solo informativa: non cambia nulla.
+    """
+    saldo_totale = stato.saldo_disponibile + _valore_posizioni(stato, dati_per_ticker, oggi)
+    paniere = paniere_per_saldo(saldo_totale)
+    da_valutare = list(dict.fromkeys(paniere + list(stato.posizioni)))  # anche le posizioni gia' aperte
+    dati = {t: _fino_a(dati_per_ticker[t], oggi) for t in da_valutare if t in dati_per_ticker}
+    punteggi = scoring.valuta_paniere(dati)
+    soglia = config.LIVELLI_CAUTELA.get(cautela, 2)
+
+    candidati = []
+    for ticker, d in punteggi.items():
+        vol = d["volatilita"]
+        candidati.append({
+            "ticker": ticker,
+            "etichetta": config.etichetta_di(ticker),
+            "criteri": int(d["criteri_favorevoli"]),
+            "volatilita": None if vol != vol else round(float(vol), 3),
+            "in_portafoglio": ticker in stato.posizioni,
+        })
+    # stesso ordine di preferenza usato per scegliere: piu' criteri, poi meno volatile
+    candidati.sort(key=lambda c: (-c["criteri"], 9.0 if c["volatilita"] is None else c["volatilita"]))
+
+    mancanti = [t for t in paniere if t not in dati_per_ticker]
+    nota = _nota_valutazione(stato, candidati, soglia, posizioni_consentite, oggi, mancanti)
+    return {"data_ora": data_ora, "soglia": soglia, "candidati": candidati, "nota": nota}
+
+
+def _nota_valutazione(stato, candidati, soglia, posizioni_consentite, oggi, mancanti) -> str:
+    tenute = [c for c in candidati if c["in_portafoglio"]]
+    libere = [c for c in candidati if not c["in_portafoglio"]]
+    migliore = libere[0] if libere else None
+    parti = []
+
+    if stato.in_raffreddamento_fino_al is not None and oggi < stato.in_raffreddamento_fino_al:
+        parti.append(
+            f"Modalità difensiva attiva fino al {stato.in_raffreddamento_fino_al.strftime('%d/%m')}: "
+            f"nessun nuovo acquisto."
+        )
+
+    if tenute:
+        parti.append("In portafoglio: " + ", ".join(f"{c['ticker']} ({c['criteri']}/3)" for c in tenute) + ".")
+    else:
+        parti.append("Nessuna posizione aperta.")
+
+    if migliore:
+        parti.append(f"Migliore alternativa: {migliore['ticker']} ({migliore['criteri']}/3).")
+
+    if tenute and migliore:
+        piu_debole = min(tenute, key=lambda c: c["criteri"])
+        abbastanza_migliore = (
+            migliore["criteri"] >= soglia
+            and migliore["criteri"] >= piu_debole["criteri"] + config.SOGLIA_DIFFERENZA_CRITERI_SWITCH
+        )
+        if abbastanza_migliore:
+            pos = stato.posizioni[piu_debole["ticker"]]
+            guadagno = pos.quota_investita * pos.ultima_variazione_pct
+            costo = 2 * config.COMMISSIONE_STIMATA_EUR
+            parti.append(
+                f"Un cambio non è ancora conveniente: guadagno attuale {guadagno:+.2f}\u20ac, "
+                f"ne servirebbero più di {costo:.2f}\u20ac per coprire le commissioni stimate."
+            )
+        else:
+            parti.append(
+                f"Nessuna alternativa abbastanza migliore (servono almeno {soglia}/3 e "
+                f"{config.SOGLIA_DIFFERENZA_CRITERI_SWITCH} criterio in più)."
+            )
+    elif not tenute and not any(c["criteri"] >= soglia for c in libere):
+        parti.append(f"Nessun candidato raggiunge la soglia di convinzione ({soglia}/3): resto in attesa.")
+
+    if stato.saldo_disponibile > 0.005 and len(stato.posizioni) >= posizioni_consentite:
+        parti.append(
+            f"Capitale libero {stato.saldo_disponibile:.2f}\u20ac ma posizioni già al massimo "
+            f"({len(stato.posizioni)}/{posizioni_consentite})."
+        )
+    if mancanti:
+        parti.append(f"Dati non disponibili oggi per: {', '.join(mancanti)}.")
+    return " ".join(parti)
 
 
 def aggiorna_variazioni_posizioni(
