@@ -1,0 +1,57 @@
+name: Salvabot - backtest su dati reali
+
+# Si lancia SOLO a mano (Actions -> questo workflow -> Run workflow).
+# Rifa' girare le regole di Salvabot sulla storia vera di tutto il paniere (ETF, crypto, azioni)
+# e scrive il risultato nel riepilogo della pagina dell'esecuzione. Non tocca stato ne' pagina.
+on:
+  workflow_dispatch:
+    inputs:
+      giorni:
+        description: "Giorni di storia (1100 = circa 3 anni)"
+        default: "1100"
+        required: true
+      posizioni:
+        description: "Quante posizioni insieme (1 = come ora)"
+        default: "1"
+        required: true
+      cautela:
+        description: "prudente / equilibrato / dinamico"
+        default: "equilibrato"
+        required: true
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      SALVABOT_SOLO_DATI_REALI: "1"
+      GIORNI: ${{ inputs.giorni }}
+      POSIZIONI: ${{ inputs.posizioni }}
+      CAUTELA: ${{ inputs.cautela }}
+    steps:
+      - name: Scarica il codice del repository
+        uses: actions/checkout@v4
+
+      - name: Prepara Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installa le dipendenze
+        run: pip install -r requirements.txt
+
+      - name: Esegui il backtest
+        shell: bash
+        run: python3 main.py --giorni "$GIORNI" --posizioni "$POSIZIONI" --cautela "$CAUTELA" --solo-dati-reali | tee backtest.txt
+
+      - name: Mostra il risultato nel riepilogo
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Risultato del backtest"
+            echo '```'
+            if [ -f backtest.txt ]; then cat backtest.txt; else echo "Nessun risultato: guarda il passaggio precedente per l'errore."; fi
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
