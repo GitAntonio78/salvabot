@@ -52,11 +52,17 @@ def esegui_singolo_ciclo(
     )
     dati_per_ticker = data_provider.scarica_paniere(tutti_i_ticker, giorni=400)
 
+    # Senza i dati dell'ETF di riferimento o di una posizione aperta non si decide alla cieca:
+    # il ciclo si ferma senza salvare nulla e si riprova al prossimo.
+    data_provider.verifica_dati(dati_per_ticker, [ticker_indice_riferimento] + list(stato.posizioni))
+
     serie_indice = dati_per_ticker[ticker_indice_riferimento]["Close"]
     if isinstance(serie_indice, pd.DataFrame):
         serie_indice = serie_indice.iloc[:, 0]
 
-    oggi = serie_indice.index[-1]
+    # "Oggi" = l'ultima data con un prezzo valido tra TUTTI i ticker (non solo gli ETF),
+    # cosi' nel weekend le crypto sono prezzate con il prezzo piu' recente, non con quello di venerdi'.
+    oggi = decision_engine.data_piu_recente(dati_per_ticker)
 
     log = decision_engine.decidi_ciclo(
         stato=stato,
@@ -78,6 +84,10 @@ def esegui_singolo_ciclo(
 
     portafoglio.saldo_investito = saldo_operativo
     decision_engine.aggiorna_variazioni_posizioni(stato, dati_per_ticker, oggi)
+    portafoglio.ultima_valutazione = decision_engine.fotografia_valutazione(
+        stato, dati_per_ticker, oggi, cautela, impostazioni["POSIZIONI_CONSENTITE"],
+        datetime.now().strftime("%d/%m %H:%M"),
+    )
 
     evento_rilevante = any(e["tipo"] in ("stop_loss", "take_profit", "switch", "investito") for e in log)
     portafoglio.registra_saldo_giornaliero(saldo_operativo)
@@ -129,7 +139,7 @@ def esegui_singolo_ciclo(
         "trend": direzione,
         "giorni_di_trend": giorni_trend,
         "data_ciclo": str(oggi.date()),
-        "dati_reali_usati": data_provider.YFINANCE_DISPONIBILE,
+        "dati_reali_usati": data_provider.tutti_reali(),
     }
 
 
