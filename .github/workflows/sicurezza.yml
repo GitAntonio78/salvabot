@@ -24,6 +24,8 @@ concurrency:
 jobs:
   controllo-sicurezza:
     runs-on: ubuntu-latest
+    env:
+      SALVABOT_SOLO_DATI_REALI: "1"   # mai prezzi inventati: se i dati mancano, il ciclo si ferma
     permissions:
       contents: write
     steps:
