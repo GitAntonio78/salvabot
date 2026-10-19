@@ -25,10 +25,7 @@ import settings_store
 import state_store
 
 
-def esegui_controllo_sicurezza(
-    percorso_stato: Path = state_store.FILE_STATO_DEFAULT,
-    ticker_riferimento: str = "BTC-USD",  # tratta tutti i giorni, utile come riferimento sempre fresco
-) -> dict:
+def esegui_controllo_sicurezza(percorso_stato: Path = state_store.FILE_STATO_DEFAULT) -> dict:
     stato_e_portafoglio = state_store.carica_stato(percorso_stato)
     if stato_e_portafoglio is None:
         return {
@@ -47,10 +44,9 @@ def esegui_controllo_sicurezza(
     )
     dati_per_ticker = data_provider.scarica_paniere(tutti_i_ticker, giorni=400)
 
-    serie_riferimento = dati_per_ticker[ticker_riferimento]["Close"]
-    if isinstance(serie_riferimento, pd.DataFrame):
-        serie_riferimento = serie_riferimento.iloc[:, 0]
-    oggi = serie_riferimento.index[-1]
+    # Senza i dati di una posizione aperta non si decide alla cieca: ciclo saltato, nulla salvato.
+    data_provider.verifica_dati(dati_per_ticker, list(stato.posizioni))
+    oggi = decision_engine.data_piu_recente(dati_per_ticker)
 
     # 1. Stop-loss/take-profit: sempre attivo, protegge a prescindere da tutto
     eventi = decision_engine.controlla_stop_loss_take_profit(
@@ -80,6 +76,10 @@ def esegui_controllo_sicurezza(
 
     portafoglio.saldo_investito = saldo_operativo
     decision_engine.aggiorna_variazioni_posizioni(stato, dati_per_ticker, oggi)
+    portafoglio.ultima_valutazione = decision_engine.fotografia_valutazione(
+        stato, dati_per_ticker, oggi, cautela, impostazioni["POSIZIONI_CONSENTITE"],
+        datetime.now().strftime("%d/%m %H:%M"),
+    )
     portafoglio.registra_saldo_giornaliero(saldo_operativo)
 
     adesso = datetime.now().strftime("%d/%m %H:%M")
@@ -95,7 +95,7 @@ def esegui_controllo_sicurezza(
         "esito": esito,
         "in_raffreddamento": in_raffreddamento,
         "saldo_investito": round(saldo_operativo, 2),
-        "dati_reali_usati": data_provider.YFINANCE_DISPONIBILE,
+        "dati_reali_usati": data_provider.tutti_reali(),
     }
 
 
