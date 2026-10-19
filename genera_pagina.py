@@ -179,6 +179,14 @@ CSS = """
   .bottone.primario { background: #1e7d3c; color: #fff; }
   .bottone.secondario { background: #eee; color: #444; }
   .bottone.disabilitato { flex: none; padding: 6px 12px; font-size: 0.78rem; background: #f0f0f0; color: #aaa; }
+  .nota-val { font-size: 0.85rem; line-height: 1.5; margin: 0; color: #333; }
+  details { margin-top: 10px; }
+  summary { cursor: pointer; font-size: 0.82rem; color: #4f5fd6; }
+  .val-riga { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.82rem; }
+  .val-riga:last-child { border-bottom: none; }
+  .val-ok { color: #1e7d3c; font-weight: 500; } .val-no { color: #999; }
+  .in-pf { font-size: 0.68rem; color: #1e7d3c; margin-left: 7px; }
+  .agg { margin: 8px 0 0; font-size: 0.72rem; color: #999; }
   .impostazioni .riga { font-size: 0.82rem; padding: 6px 0; }
   .impostazioni .riga span:last-child { font-weight: 500; }
 """
@@ -286,6 +294,29 @@ def _controlli_html(storico_controlli: list[dict]) -> str:
     )
 
 
+def _valutazione_html(val: dict) -> str:
+    """'Cosa sta valutando Salvabot': nota in parole semplici + elenco comprimibile dei candidati."""
+    if not val or not val.get("candidati"):
+        return '<p class="muto">Ancora nessuna valutazione: arriverà al prossimo ciclo.</p>'
+    soglia = val.get("soglia", 2)
+    righe = []
+    for c in val["candidati"]:
+        classe_tag = {"ETF": "tag-etf", "Crypto": "tag-crypto"}.get(c["etichetta"], "tag-azione")
+        classe_punt = "val-ok" if c["criteri"] >= soglia else "val-no"
+        in_pf = '<span class="in-pf">in portafoglio</span>' if c.get("in_portafoglio") else ""
+        righe.append(
+            f'<div class="val-riga"><span>{escape(c["ticker"])}'
+            f'<span class="tag {classe_tag}">{escape(c["etichetta"])}</span>{in_pf}</span>'
+            f'<span class="{classe_punt}">{c["criteri"]}/3</span></div>'
+        )
+    return (
+        f'<p class="nota-val">{escape(val.get("nota", ""))}</p>'
+        f'<details><summary>Vedi tutti i candidati ({len(righe)})</summary>{"".join(righe)}</details>'
+        f'<p class="agg">Aggiornato {escape(val.get("data_ora", ""))} · soglia di convinzione {soglia}/3 '
+        f'(in verde chi la raggiunge)</p>'
+    )
+
+
 def _funzione_bloccata(titolo: str, tipo_notifica_attiva: bool) -> str:
     """
     Indicazione semplice che una funzione (salvadanaio, nuova posizione) esiste
@@ -311,6 +342,7 @@ def genera() -> None:
     if stato_e_portafoglio is None:
         saldo, salvadanaio, direzione, posizioni = 0.0, 0.0, "stabile", {}
         storico_punti, storico_controlli, giorno_contatore, controlli_oggi = [], [], "", 0
+        valutazione = {}
     else:
         stato, portafoglio = stato_e_portafoglio
         saldo = portafoglio.saldo_investito
@@ -321,6 +353,7 @@ def genera() -> None:
         storico_controlli = portafoglio.storico_controlli_sicurezza
         giorno_contatore = portafoglio.giorno_contatore_controlli
         controlli_oggi = portafoglio.controlli_oggi
+        valutazione = portafoglio.ultima_valutazione
 
     colore_grafico = "#c9432b" if direzione == "calo" else "#1e7d3c"
 
@@ -374,6 +407,11 @@ def genera() -> None:
   <div class="card">
     <h2>Rischio crypto/azioni</h2>
     {_rischio_html(posizioni, saldo)}
+  </div>
+
+  <div class="card">
+    <h2>Cosa sta valutando Salvabot</h2>
+    {_valutazione_html(valutazione)}
   </div>
 
   <div class="card">
