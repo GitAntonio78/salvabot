@@ -22,6 +22,7 @@ class Portafoglio:
     storico_controlli_sicurezza: list[dict] = field(default_factory=list)  # ultimi N {data_ora, esito}
     giorno_contatore_controlli: str = ""   # ultimo giorno in cui e' girato un ciclo (qualsiasi)
     controlli_oggi: int = 0                # quanti cicli (principale o sicurezza) sono girati oggi
+    ultima_valutazione: dict = field(default_factory=dict)  # 'cosa sta valutando Salvabot' (ultima fotografia)
 
     def registra_evento(self, data: str, tipo: str) -> None:
         """
