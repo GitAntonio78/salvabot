@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": -0.0003509860637466388
+        "ultima_variazione_pct": 0.000818997236743492
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 29.989470418087603,
+    "saldo_investito": 30.0245699171023,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -40,7 +40,8 @@
       29.691117981662316,
       29.898209578313274,
       29.898209578313274,
-      29.989470418087603
+      29.989470418087603,
+      30.0245699171023
     ],
     "storico_eventi": [
       {
@@ -78,13 +79,14 @@
         "data_ora": "20/10 23:21",
         "saldo": 29.99,
         "evento": false
+      },
+      {
+        "data_ora": "21/10 12:55",
+        "saldo": 30.02,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "19/10 21:27",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "20/10 12:43",
         "esito": "Nessuna variazione critica."
@@ -96,12 +98,16 @@
       {
         "data_ora": "20/10 20:30",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "21/10 12:55",
+        "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "20/10",
-    "controlli_oggi": 4,
+    "giorno_contatore_controlli": "21/10",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "20/10 23:21",
+      "data_ora": "21/10 12:55",
       "soglia": 2,
       "candidati": [
         {
@@ -122,7 +128,7 @@
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.32,
+          "volatilita": 0.319,
           "in_portafoglio": false
         },
         {
@@ -150,7 +156,7 @@
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.451,
+          "volatilita": 0.448,
           "in_portafoglio": false
         }
       ],
