@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": 0.0022230307557340517
+        "ultima_variazione_pct": -0.0033930140562241826
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 30.06669092267202,
+    "saldo_investito": 29.898209578313274,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -43,7 +43,8 @@
       29.989470418087603,
       30.0245699171023,
       30.06669092267202,
-      30.06669092267202
+      30.06669092267202,
+      29.898209578313274
     ],
     "storico_eventi": [
       {
@@ -83,8 +84,8 @@
         "evento": false
       },
       {
-        "data_ora": "21/10 20:35",
-        "saldo": 30.07,
+        "data_ora": "21/10 23:34",
+        "saldo": 29.9,
         "evento": false
       }
     ],
@@ -107,9 +108,9 @@
       }
     ],
     "giorno_contatore_controlli": "21/10",
-    "controlli_oggi": 3,
+    "controlli_oggi": 4,
     "ultima_valutazione": {
-      "data_ora": "21/10 20:35",
+      "data_ora": "21/10 23:34",
       "soglia": 2,
       "candidati": [
         {
@@ -123,7 +124,7 @@
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.32,
+          "volatilita": 0.319,
           "in_portafoglio": false
         },
         {
@@ -151,7 +152,7 @@
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.449,
+          "volatilita": 0.448,
           "in_portafoglio": false
         },
         {
