@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": 0.000818997236743492
+        "ultima_variazione_pct": 0.0022230307557340517
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 30.0245699171023,
+    "saldo_investito": 30.06669092267202,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -41,7 +41,8 @@
       29.898209578313274,
       29.898209578313274,
       29.989470418087603,
-      30.0245699171023
+      30.0245699171023,
+      30.06669092267202
     ],
     "storico_eventi": [
       {
@@ -81,16 +82,12 @@
         "evento": false
       },
       {
-        "data_ora": "21/10 12:55",
-        "saldo": 30.02,
+        "data_ora": "21/10 18:33",
+        "saldo": 30.07,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "20/10 12:43",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "20/10 18:26",
         "esito": "Nessuna variazione critica."
@@ -102,12 +99,16 @@
       {
         "data_ora": "21/10 12:55",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "21/10 18:33",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "21/10",
-    "controlli_oggi": 1,
+    "controlli_oggi": 2,
     "ultima_valutazione": {
-      "data_ora": "21/10 12:55",
+      "data_ora": "21/10 18:33",
       "soglia": 2,
       "candidati": [
         {
@@ -118,24 +119,17 @@
           "in_portafoglio": true
         },
         {
-          "ticker": "AAPL",
-          "etichetta": "Azione",
-          "criteri": 3,
-          "volatilita": 0.278,
-          "in_portafoglio": false
-        },
-        {
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.319,
+          "volatilita": 0.32,
           "in_portafoglio": false
         },
         {
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.326,
+          "volatilita": 0.327,
           "in_portafoglio": false
         },
         {
@@ -149,18 +143,25 @@
           "ticker": "AMZN",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.396,
+          "volatilita": 0.395,
           "in_portafoglio": false
         },
         {
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.448,
+          "volatilita": 0.45,
+          "in_portafoglio": false
+        },
+        {
+          "ticker": "AAPL",
+          "etichetta": "Azione",
+          "criteri": 2,
+          "volatilita": 0.278,
           "in_portafoglio": false
         }
       ],
-      "nota": "In portafoglio: VWCE.DE (3/3). Migliore alternativa: AAPL (3/3). Nessuna alternativa abbastanza migliore (servono almeno 2/3 e 1 criterio in più). Dati non disponibili oggi per: AGGH.DE."
+      "nota": "In portafoglio: VWCE.DE (3/3). Migliore alternativa: BTC-USD (3/3). Nessuna alternativa abbastanza migliore (servono almeno 2/3 e 1 criterio in più). Dati non disponibili oggi per: AGGH.DE."
     }
   }
 }
