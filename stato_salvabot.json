@@ -42,6 +42,7 @@
       29.898209578313274,
       29.989470418087603,
       30.0245699171023,
+      30.06669092267202,
       30.06669092267202
     ],
     "storico_eventi": [
@@ -82,16 +83,12 @@
         "evento": false
       },
       {
-        "data_ora": "21/10 18:33",
+        "data_ora": "21/10 20:35",
         "saldo": 30.07,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "20/10 18:26",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "20/10 20:30",
         "esito": "Nessuna variazione critica."
@@ -103,12 +100,16 @@
       {
         "data_ora": "21/10 18:33",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "21/10 20:35",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "21/10",
-    "controlli_oggi": 2,
+    "controlli_oggi": 3,
     "ultima_valutazione": {
-      "data_ora": "21/10 18:33",
+      "data_ora": "21/10 20:35",
       "soglia": 2,
       "candidati": [
         {
@@ -150,14 +151,14 @@
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.45,
+          "volatilita": 0.449,
           "in_portafoglio": false
         },
         {
           "ticker": "AAPL",
           "etichetta": "Azione",
           "criteri": 2,
-          "volatilita": 0.278,
+          "volatilita": 0.277,
           "in_portafoglio": false
         }
       ],
