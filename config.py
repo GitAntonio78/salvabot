@@ -43,9 +43,9 @@ CRASH_GIORNI_DI_RAFFREDDAMENTO = 14  # Salvabot non ricompra per questo periodo 
 # --- Paniere di ETF, a scalini in base al saldo (nessun numero fisso) ---
 # Ogni voce: (saldo minimo, lista ticker). yfinance-style ticker.
 PANIERE_PER_FASCIA_DI_SALDO = [
-    (0,    ["VWCE.DE", "AGGH.DE"]),                              # 2 ETF: azionario globale + obbligazionario
-    (100,  ["VWCE.DE", "AGGH.DE", "MEUD.PA"]),                   # + azionario Europa
-    (300,  ["VWCE.DE", "AGGH.DE", "MEUD.PA", "IS3N.DE"]),        # + mercati emergenti
+    (0,    ["VWCE.DE", "EUNA.DE"]),                              # 2 ETF: azionario globale + obbligazionario
+    (100,  ["VWCE.DE", "EUNA.DE", "MEUD.PA"]),                   # + azionario Europa
+    (300,  ["VWCE.DE", "EUNA.DE", "MEUD.PA", "IS3N.DE"]),        # + mercati emergenti
 ]
 
 # --- Soglia di "maturità" del saldo per il salvadanaio (non tempo fisso) ---
