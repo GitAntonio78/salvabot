@@ -46,6 +46,7 @@
       30.06669092267202,
       29.898209578313274,
       29.82449982700636,
+      29.70866907012973,
       29.70866907012973
     ],
     "storico_eventi": [
@@ -91,7 +92,7 @@
         "evento": false
       },
       {
-        "data_ora": "22/10 18:29",
+        "data_ora": "22/10 19:27",
         "saldo": 29.71,
         "evento": false
       }
@@ -115,9 +116,9 @@
       }
     ],
     "giorno_contatore_controlli": "22/10",
-    "controlli_oggi": 2,
+    "controlli_oggi": 3,
     "ultima_valutazione": {
-      "data_ora": "22/10 18:29",
+      "data_ora": "22/10 19:27",
       "soglia": 2,
       "candidati": [
         {
@@ -128,24 +129,17 @@
           "in_portafoglio": true
         },
         {
-          "ticker": "AAPL",
-          "etichetta": "Azione",
-          "criteri": 3,
-          "volatilita": 0.276,
-          "in_portafoglio": false
-        },
-        {
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.324,
+          "volatilita": 0.323,
           "in_portafoglio": false
         },
         {
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.328,
+          "volatilita": 0.329,
           "in_portafoglio": false
         },
         {
@@ -159,7 +153,7 @@
           "ticker": "AMZN",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.4,
+          "volatilita": 0.401,
           "in_portafoglio": false
         },
         {
@@ -168,9 +162,23 @@
           "criteri": 3,
           "volatilita": 0.453,
           "in_portafoglio": false
+        },
+        {
+          "ticker": "AAPL",
+          "etichetta": "Azione",
+          "criteri": 2,
+          "volatilita": 0.276,
+          "in_portafoglio": false
+        },
+        {
+          "ticker": "EUNA.DE",
+          "etichetta": "ETF",
+          "criteri": 1,
+          "volatilita": 0.034,
+          "in_portafoglio": false
         }
       ],
-      "nota": "In portafoglio: VWCE.DE (3/3). Migliore alternativa: AAPL (3/3). Nessuna alternativa abbastanza migliore (servono almeno 2/3 e 1 criterio in più). Dati non disponibili oggi per: AGGH.DE."
+      "nota": "In portafoglio: VWCE.DE (3/3). Migliore alternativa: BTC-USD (3/3). Nessuna alternativa abbastanza migliore (servono almeno 2/3 e 1 criterio in più)."
     }
   }
 }
