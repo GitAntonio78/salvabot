@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": -0.009711030995675695
+        "ultima_variazione_pct": 0.0022230307557340517
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 29.70866907012973,
+    "saldo_investito": 30.06669092267202,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -49,7 +49,8 @@
       29.70866907012973,
       29.70866907012973,
       29.70866907012973,
-      29.70866907012973
+      29.70866907012973,
+      30.06669092267202
     ],
     "storico_eventi": [
       {
@@ -94,8 +95,8 @@
         "evento": false
       },
       {
-        "data_ora": "22/10 20:31",
-        "saldo": 29.71,
+        "data_ora": "22/10 23:32",
+        "saldo": 30.07,
         "evento": false
       }
     ],
@@ -118,16 +119,16 @@
       }
     ],
     "giorno_contatore_controlli": "22/10",
-    "controlli_oggi": 5,
+    "controlli_oggi": 6,
     "ultima_valutazione": {
-      "data_ora": "22/10 20:31",
+      "data_ora": "22/10 23:32",
       "soglia": 2,
       "candidati": [
         {
           "ticker": "VWCE.DE",
           "etichetta": "ETF",
           "criteri": 3,
-          "volatilita": 0.1,
+          "volatilita": 0.098,
           "in_portafoglio": true
         },
         {
@@ -166,17 +167,17 @@
           "in_portafoglio": false
         },
         {
+          "ticker": "EUNA.DE",
+          "etichetta": "ETF",
+          "criteri": 2,
+          "volatilita": 0.034,
+          "in_portafoglio": false
+        },
+        {
           "ticker": "AAPL",
           "etichetta": "Azione",
           "criteri": 2,
           "volatilita": 0.276,
-          "in_portafoglio": false
-        },
-        {
-          "ticker": "EUNA.DE",
-          "etichetta": "ETF",
-          "criteri": 1,
-          "volatilita": 0.034,
           "in_portafoglio": false
         }
       ],
