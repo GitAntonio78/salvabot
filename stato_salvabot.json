@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": -0.009711030995675695
+        "ultima_variazione_pct": -0.00959400588642548
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 29.70866907012973,
+    "saldo_investito": 29.712179823407237,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -54,7 +54,8 @@
       29.64899965401272,
       29.712179823407237,
       29.712179823407237,
-      29.70866907012973
+      29.70866907012973,
+      29.712179823407237
     ],
     "storico_eventi": [
       {
@@ -107,13 +108,14 @@
         "data_ora": "23/10 23:25",
         "saldo": 29.71,
         "evento": false
+      },
+      {
+        "data_ora": "24/10 11:59",
+        "saldo": 29.71,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "22/10 20:31",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "23/10 12:37",
         "esito": "Nessuna variazione critica."
@@ -125,12 +127,16 @@
       {
         "data_ora": "23/10 20:22",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "24/10 11:59",
+        "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "23/10",
-    "controlli_oggi": 4,
+    "giorno_contatore_controlli": "24/10",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "23/10 23:25",
+      "data_ora": "24/10 11:59",
       "soglia": 2,
       "candidati": [
         {
@@ -172,7 +178,7 @@
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.452,
+          "volatilita": 0.448,
           "in_portafoglio": false
         },
         {
