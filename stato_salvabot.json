@@ -58,6 +58,7 @@
       29.712179823407237,
       29.712179823407237,
       29.712179823407237,
+      29.712179823407237,
       29.712179823407237
     ],
     "storico_eventi": [
@@ -67,11 +68,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "15/10 23:14",
-        "saldo": 30.27,
-        "evento": true
-      },
       {
         "data_ora": "16/10 22:59",
         "saldo": 30.0,
@@ -116,13 +112,14 @@
         "data_ora": "24/10 22:41",
         "saldo": 29.71,
         "evento": false
+      },
+      {
+        "data_ora": "25/10 12:33",
+        "saldo": 29.71,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "23/10 20:22",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "24/10 11:59",
         "esito": "Nessuna variazione critica."
@@ -134,12 +131,16 @@
       {
         "data_ora": "24/10 19:26",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "25/10 12:33",
+        "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "24/10",
-    "controlli_oggi": 4,
+    "giorno_contatore_controlli": "25/10",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "24/10 22:41",
+      "data_ora": "25/10 12:33",
       "soglia": 2,
       "candidati": [
         {
@@ -153,7 +154,7 @@
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.323,
+          "volatilita": 0.32,
           "in_portafoglio": false
         },
         {
@@ -181,7 +182,7 @@
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.449,
+          "volatilita": 0.445,
           "in_portafoglio": false
         },
         {
