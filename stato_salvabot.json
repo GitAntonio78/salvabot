@@ -61,6 +61,7 @@
       29.712179823407237,
       29.712179823407237,
       29.712179823407237,
+      29.712179823407237,
       29.712179823407237
     ],
     "storico_eventi": [
@@ -116,7 +117,7 @@
         "evento": false
       },
       {
-        "data_ora": "25/10 19:32",
+        "data_ora": "25/10 22:46",
         "saldo": 29.71,
         "evento": false
       }
@@ -140,9 +141,9 @@
       }
     ],
     "giorno_contatore_controlli": "25/10",
-    "controlli_oggi": 3,
+    "controlli_oggi": 4,
     "ultima_valutazione": {
-      "data_ora": "25/10 19:32",
+      "data_ora": "25/10 22:46",
       "soglia": 2,
       "candidati": [
         {
