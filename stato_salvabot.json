@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": -0.00959400588642548
+        "ultima_variazione_pct": -0.008424022585935349
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 29.712179823407237,
+    "saldo_investito": 29.74727932242194,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -62,7 +62,8 @@
       29.712179823407237,
       29.712179823407237,
       29.712179823407237,
-      29.712179823407237
+      29.712179823407237,
+      29.74727932242194
     ],
     "storico_eventi": [
       {
@@ -71,11 +72,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "16/10 22:59",
-        "saldo": 30.0,
-        "evento": false
-      },
       {
         "data_ora": "17/10 22:36",
         "saldo": 29.91,
@@ -120,13 +116,14 @@
         "data_ora": "25/10 22:46",
         "saldo": 29.71,
         "evento": false
+      },
+      {
+        "data_ora": "26/10 14:15",
+        "saldo": 29.75,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "24/10 19:26",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "25/10 12:33",
         "esito": "Nessuna variazione critica."
@@ -138,12 +135,16 @@
       {
         "data_ora": "25/10 19:32",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "26/10 14:15",
+        "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "25/10",
-    "controlli_oggi": 4,
+    "giorno_contatore_controlli": "26/10",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "25/10 22:46",
+      "data_ora": "26/10 14:15",
       "soglia": 2,
       "candidati": [
         {
@@ -154,45 +155,45 @@
           "in_portafoglio": true
         },
         {
+          "ticker": "AAPL",
+          "etichetta": "Azione",
+          "criteri": 3,
+          "volatilita": 0.276,
+          "in_portafoglio": false
+        },
+        {
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.319,
+          "volatilita": 0.32,
           "in_portafoglio": false
         },
         {
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.328,
+          "volatilita": 0.325,
           "in_portafoglio": false
         },
         {
           "ticker": "MSFT",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.378,
+          "volatilita": 0.372,
           "in_portafoglio": false
         },
         {
           "ticker": "AMZN",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.4,
+          "volatilita": 0.396,
           "in_portafoglio": false
         },
         {
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.444,
-          "in_portafoglio": false
-        },
-        {
-          "ticker": "AAPL",
-          "etichetta": "Azione",
-          "criteri": 2,
-          "volatilita": 0.276,
+          "volatilita": 0.445,
           "in_portafoglio": false
         },
         {
@@ -203,7 +204,7 @@
           "in_portafoglio": false
         }
       ],
-      "nota": "In portafoglio: VWCE.DE (3/3). Migliore alternativa: BTC-USD (3/3). Nessuna alternativa abbastanza migliore (servono almeno 2/3 e 1 criterio in più)."
+      "nota": "In portafoglio: VWCE.DE (3/3). Migliore alternativa: AAPL (3/3). Nessuna alternativa abbastanza migliore (servono almeno 2/3 e 1 criterio in più)."
     }
   }
 }
