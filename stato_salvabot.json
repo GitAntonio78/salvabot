@@ -68,6 +68,7 @@
       29.835029408918757,
       29.712179823407237,
       30.0245699171023,
+      30.12986841414642,
       30.12986841414642
     ],
     "storico_eventi": [
@@ -123,16 +124,12 @@
         "evento": false
       },
       {
-        "data_ora": "27/10 19:23",
+        "data_ora": "27/10 21:15",
         "saldo": 30.13,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "26/10 19:52",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "26/10 21:36",
         "esito": "Nessuna variazione critica."
@@ -144,12 +141,16 @@
       {
         "data_ora": "27/10 19:23",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "27/10 21:15",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "27/10",
-    "controlli_oggi": 3,
+    "controlli_oggi": 4,
     "ultima_valutazione": {
-      "data_ora": "27/10 19:23",
+      "data_ora": "27/10 21:15",
       "soglia": 2,
       "candidati": [
         {
@@ -177,7 +178,7 @@
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.327,
+          "volatilita": 0.326,
           "in_portafoglio": false
         },
         {
