@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": -0.011934061751409746
+        "ultima_variazione_pct": 0.0029250028832273293
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 29.641978147457706,
+    "saldo_investito": 30.08775008649682,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -81,7 +81,8 @@
       30.175500172993637,
       29.771849239524244,
       29.641978147457706,
-      29.641978147457706
+      29.641978147457706,
+      30.08775008649682
     ],
     "storico_eventi": [
       {
@@ -90,11 +91,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "21/10 23:34",
-        "saldo": 29.9,
-        "evento": false
-      },
       {
         "data_ora": "22/10 23:32",
         "saldo": 30.07,
@@ -139,6 +135,11 @@
         "data_ora": "30/10 21:26",
         "saldo": 29.64,
         "evento": false
+      },
+      {
+        "data_ora": "31/10 00:00",
+        "saldo": 30.09,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
@@ -159,24 +160,24 @@
         "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "30/10",
-    "controlli_oggi": 4,
+    "giorno_contatore_controlli": "31/10",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "30/10 21:26",
+      "data_ora": "31/10 00:00",
       "soglia": 2,
       "candidati": [
         {
           "ticker": "VWCE.DE",
           "etichetta": "ETF",
           "criteri": 3,
-          "volatilita": 0.102,
+          "volatilita": 0.099,
           "in_portafoglio": true
         },
         {
           "ticker": "AAPL",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.278,
+          "volatilita": 0.277,
           "in_portafoglio": false
         },
         {
@@ -190,14 +191,14 @@
           "ticker": "MSFT",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.366,
+          "volatilita": 0.367,
           "in_portafoglio": false
         },
         {
           "ticker": "AMZN",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.393,
+          "volatilita": 0.392,
           "in_portafoglio": false
         },
         {
@@ -211,7 +212,7 @@
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 2,
-          "volatilita": 0.38,
+          "volatilita": 0.379,
           "in_portafoglio": false
         },
         {
