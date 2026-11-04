@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": -0.006318016939451512
+        "ultima_variazione_pct": -0.016848045171870697
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 29.810459491816452,
+    "saldo_investito": 29.49455864484388,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -100,7 +100,8 @@
       29.72622015859714,
       29.72622015859714,
       29.859599326021062,
-      29.810459491816452
+      29.810459491816452,
+      29.49455864484388
     ],
     "storico_eventi": [
       {
@@ -155,16 +156,12 @@
         "evento": false
       },
       {
-        "data_ora": "04/11 21:15",
-        "saldo": 29.81,
+        "data_ora": "04/11 23:36",
+        "saldo": 29.49,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "03/11 20:55",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "03/11 23:15",
         "esito": "Nessuna variazione critica."
@@ -176,19 +173,23 @@
       {
         "data_ora": "04/11 21:15",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "04/11 23:36",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "04/11",
-    "controlli_oggi": 3,
+    "controlli_oggi": 4,
     "ultima_valutazione": {
-      "data_ora": "04/11 21:15",
+      "data_ora": "04/11 23:36",
       "soglia": 2,
       "candidati": [
         {
           "ticker": "VWCE.DE",
           "etichetta": "ETF",
           "criteri": 3,
-          "volatilita": 0.102,
+          "volatilita": 0.101,
           "in_portafoglio": true
         },
         {
@@ -202,7 +203,7 @@
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.331,
+          "volatilita": 0.333,
           "in_portafoglio": false
         },
         {
@@ -227,17 +228,17 @@
           "in_portafoglio": false
         },
         {
-          "ticker": "EUNA.DE",
-          "etichetta": "ETF",
-          "criteri": 2,
-          "volatilita": 0.035,
-          "in_portafoglio": false
-        },
-        {
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 2,
           "volatilita": 0.374,
+          "in_portafoglio": false
+        },
+        {
+          "ticker": "EUNA.DE",
+          "etichetta": "ETF",
+          "criteri": 1,
+          "volatilita": 0.035,
           "in_portafoglio": false
         }
       ],
