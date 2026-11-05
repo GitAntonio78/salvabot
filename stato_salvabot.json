@@ -101,6 +101,7 @@
       29.72622015859714,
       29.859599326021062,
       29.810459491816452,
+      29.49455864484388,
       29.49455864484388
     ],
     "storico_eventi": [
@@ -110,11 +111,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "26/10 21:36",
-        "saldo": 29.84,
-        "evento": false
-      },
       {
         "data_ora": "27/10 23:56",
         "saldo": 29.84,
@@ -159,6 +155,11 @@
         "data_ora": "04/11 23:36",
         "saldo": 29.49,
         "evento": false
+      },
+      {
+        "data_ora": "05/11 01:45",
+        "saldo": 29.49,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
@@ -179,10 +180,10 @@
         "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "04/11",
-    "controlli_oggi": 4,
+    "giorno_contatore_controlli": "05/11",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "04/11 23:36",
+      "data_ora": "05/11 01:45",
       "soglia": 2,
       "candidati": [
         {
@@ -196,28 +197,28 @@
           "ticker": "AAPL",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.27,
+          "volatilita": 0.257,
           "in_portafoglio": false
         },
         {
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.333,
+          "volatilita": 0.334,
           "in_portafoglio": false
         },
         {
           "ticker": "MSFT",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.369,
+          "volatilita": 0.355,
           "in_portafoglio": false
         },
         {
           "ticker": "AMZN",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.4,
+          "volatilita": 0.39,
           "in_portafoglio": false
         },
         {
@@ -231,7 +232,7 @@
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 2,
-          "volatilita": 0.374,
+          "volatilita": 0.379,
           "in_portafoglio": false
         },
         {
