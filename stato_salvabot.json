@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": -0.032175031715500624
+        "ultima_variazione_pct": -0.029835065114520363
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 29.03474904853498,
+    "saldo_investito": 29.104948046564388,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -107,7 +107,8 @@
       29.129517963666693,
       29.810459491816452,
       29.810459491816452,
-      29.03474904853498
+      29.03474904853498,
+      29.104948046564388
     ],
     "storico_eventi": [
       {
@@ -162,16 +163,12 @@
         "evento": false
       },
       {
-        "data_ora": "06/11 15:00",
-        "saldo": 29.03,
+        "data_ora": "06/11 20:49",
+        "saldo": 29.1,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "05/11 15:27",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "05/11 21:26",
         "esito": "Nessuna variazione critica."
@@ -183,12 +180,16 @@
       {
         "data_ora": "06/11 15:00",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "06/11 20:49",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "06/11",
-    "controlli_oggi": 2,
+    "controlli_oggi": 3,
     "ultima_valutazione": {
-      "data_ora": "06/11 15:00",
+      "data_ora": "06/11 20:49",
       "soglia": 2,
       "candidati": [
         {
@@ -216,7 +217,7 @@
           "ticker": "MSFT",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.374,
+          "volatilita": 0.373,
           "in_portafoglio": false
         },
         {
@@ -237,7 +238,7 @@
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 2,
-          "volatilita": 0.376,
+          "volatilita": 0.375,
           "in_portafoglio": false
         },
         {
