@@ -109,6 +109,7 @@
       29.810459491816452,
       29.03474904853498,
       29.104948046564388,
+      29.129517963666693,
       29.129517963666693
     ],
     "storico_eventi": [
@@ -118,11 +119,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "28/10 21:37",
-        "saldo": 30.18,
-        "evento": false
-      },
       {
         "data_ora": "29/10 21:45",
         "saldo": 30.09,
@@ -167,6 +163,11 @@
         "data_ora": "06/11 23:02",
         "saldo": 29.13,
         "evento": false
+      },
+      {
+        "data_ora": "07/11 01:10",
+        "saldo": 29.13,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
@@ -187,10 +188,10 @@
         "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "06/11",
-    "controlli_oggi": 4,
+    "giorno_contatore_controlli": "07/11",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "06/11 23:02",
+      "data_ora": "07/11 01:10",
       "soglia": 2,
       "candidati": [
         {
@@ -204,7 +205,7 @@
           "ticker": "AAPL",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.268,
+          "volatilita": 0.269,
           "in_portafoglio": false
         },
         {
@@ -218,7 +219,7 @@
           "ticker": "MSFT",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.373,
+          "volatilita": 0.375,
           "in_portafoglio": false
         },
         {
