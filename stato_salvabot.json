@@ -114,6 +114,7 @@
       29.104948046564388,
       29.104948046564388,
       29.104948046564388,
+      29.104948046564388,
       29.104948046564388
     ],
     "storico_eventi": [
@@ -169,16 +170,12 @@
         "evento": false
       },
       {
-        "data_ora": "08/11 00:53",
+        "data_ora": "08/11 14:16",
         "saldo": 29.1,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "06/11 23:02",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "07/11 13:59",
         "esito": "Nessuna variazione critica."
@@ -190,12 +187,16 @@
       {
         "data_ora": "07/11 21:43",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "08/11 14:16",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "08/11",
-    "controlli_oggi": 1,
+    "controlli_oggi": 2,
     "ultima_valutazione": {
-      "data_ora": "08/11 00:53",
+      "data_ora": "08/11 14:16",
       "soglia": 2,
       "candidati": [
         {
@@ -216,7 +217,7 @@
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.346,
+          "volatilita": 0.345,
           "in_portafoglio": false
         },
         {
@@ -237,7 +238,7 @@
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.478,
+          "volatilita": 0.476,
           "in_portafoglio": false
         },
         {
