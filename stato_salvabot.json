@@ -121,6 +121,7 @@
       29.104948046564388,
       29.382238641244754,
       29.104948046564388,
+      29.104948046564388,
       29.104948046564388
     ],
     "storico_eventi": [
@@ -176,7 +177,7 @@
         "evento": false
       },
       {
-        "data_ora": "10/11 01:28",
+        "data_ora": "10/11 03:47",
         "saldo": 29.1,
         "evento": false
       }
@@ -200,9 +201,9 @@
       }
     ],
     "giorno_contatore_controlli": "10/11",
-    "controlli_oggi": 1,
+    "controlli_oggi": 2,
     "ultima_valutazione": {
-      "data_ora": "10/11 01:28",
+      "data_ora": "10/11 03:47",
       "soglia": 2,
       "candidati": [
         {
@@ -216,7 +217,7 @@
           "ticker": "AAPL",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.268,
+          "volatilita": 0.259,
           "in_portafoglio": false
         },
         {
@@ -230,14 +231,14 @@
           "ticker": "MSFT",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.373,
+          "volatilita": 0.375,
           "in_portafoglio": false
         },
         {
           "ticker": "AMZN",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.401,
+          "volatilita": 0.403,
           "in_portafoglio": false
         },
         {
