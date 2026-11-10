@@ -120,6 +120,7 @@
       29.104948046564388,
       29.104948046564388,
       29.382238641244754,
+      29.104948046564388,
       29.104948046564388
     ],
     "storico_eventi": [
@@ -129,11 +130,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "31/10 23:38",
-        "saldo": 29.64,
-        "evento": false
-      },
       {
         "data_ora": "01/11 21:57",
         "saldo": 29.64,
@@ -178,13 +174,14 @@
         "data_ora": "09/11 23:45",
         "saldo": 29.1,
         "evento": false
+      },
+      {
+        "data_ora": "10/11 01:28",
+        "saldo": 29.1,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "08/11 19:32",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "08/11 21:58",
         "esito": "Nessuna variazione critica."
@@ -196,12 +193,16 @@
       {
         "data_ora": "09/11 23:45",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "10/11 01:28",
+        "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "09/11",
-    "controlli_oggi": 3,
+    "giorno_contatore_controlli": "10/11",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "09/11 23:45",
+      "data_ora": "10/11 01:28",
       "soglia": 2,
       "candidati": [
         {
@@ -215,7 +216,7 @@
           "ticker": "AAPL",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.259,
+          "volatilita": 0.268,
           "in_portafoglio": false
         },
         {
@@ -229,14 +230,14 @@
           "ticker": "MSFT",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.375,
+          "volatilita": 0.373,
           "in_portafoglio": false
         },
         {
           "ticker": "AMZN",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.403,
+          "volatilita": 0.401,
           "in_portafoglio": false
         },
         {
