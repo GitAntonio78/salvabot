@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": -0.006318016939451512
+        "ultima_variazione_pct": 0.0028079777739771147
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 29.810459491816452,
+    "saldo_investito": 30.084239333219315,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -136,7 +136,8 @@
       29.996489246722494,
       29.996489246722494,
       29.82449982700636,
-      29.810459491816452
+      29.810459491816452,
+      30.084239333219315
     ],
     "storico_eventi": [
       {
@@ -191,16 +192,12 @@
         "evento": false
       },
       {
-        "data_ora": "13/11 21:23",
-        "saldo": 29.81,
+        "data_ora": "13/11 23:29",
+        "saldo": 30.08,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "12/11 21:49",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "12/11 23:32",
         "esito": "Nessuna variazione critica."
@@ -212,19 +209,23 @@
       {
         "data_ora": "13/11 21:23",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "13/11 23:29",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "13/11",
-    "controlli_oggi": 3,
+    "controlli_oggi": 4,
     "ultima_valutazione": {
-      "data_ora": "13/11 21:23",
+      "data_ora": "13/11 23:29",
       "soglia": 2,
       "candidati": [
         {
           "ticker": "VWCE.DE",
           "etichetta": "ETF",
           "criteri": 3,
-          "volatilita": 0.112,
+          "volatilita": 0.111,
           "in_portafoglio": true
         },
         {
@@ -238,7 +239,7 @@
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.361,
+          "volatilita": 0.362,
           "in_portafoglio": false
         },
         {
