@@ -133,6 +133,7 @@
       29.417338140259456,
       29.989470418087603,
       30.084239333219315,
+      29.996489246722494,
       29.996489246722494
     ],
     "storico_eventi": [
@@ -142,11 +143,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "03/11 23:15",
-        "saldo": 29.73,
-        "evento": false
-      },
       {
         "data_ora": "04/11 23:36",
         "saldo": 29.49,
@@ -191,6 +187,11 @@
         "data_ora": "12/11 23:32",
         "saldo": 30.0,
         "evento": false
+      },
+      {
+        "data_ora": "13/11 02:06",
+        "saldo": 30.0,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
@@ -211,10 +212,10 @@
         "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "12/11",
-    "controlli_oggi": 5,
+    "giorno_contatore_controlli": "13/11",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "12/11 23:32",
+      "data_ora": "13/11 02:06",
       "soglia": 2,
       "candidati": [
         {
@@ -235,14 +236,14 @@
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.353,
+          "volatilita": 0.356,
           "in_portafoglio": false
         },
         {
           "ticker": "MSFT",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.378,
+          "volatilita": 0.379,
           "in_portafoglio": false
         },
         {
@@ -270,7 +271,7 @@
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 2,
-          "volatilita": 0.377,
+          "volatilita": 0.376,
           "in_portafoglio": false
         }
       ],
