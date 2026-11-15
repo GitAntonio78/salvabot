@@ -142,6 +142,7 @@
       29.810459491816452,
       29.810459491816452,
       29.810459491816452,
+      29.810459491816452,
       29.810459491816452
     ],
     "storico_eventi": [
@@ -197,16 +198,12 @@
         "evento": false
       },
       {
-        "data_ora": "15/11 01:17",
+        "data_ora": "15/11 14:44",
         "saldo": 29.81,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "13/11 23:29",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "14/11 14:08",
         "esito": "Nessuna variazione critica."
@@ -218,12 +215,16 @@
       {
         "data_ora": "14/11 22:17",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "15/11 14:44",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "15/11",
-    "controlli_oggi": 1,
+    "controlli_oggi": 2,
     "ultima_valutazione": {
-      "data_ora": "15/11 01:17",
+      "data_ora": "15/11 14:44",
       "soglia": 2,
       "candidati": [
         {
@@ -241,17 +242,17 @@
           "in_portafoglio": false
         },
         {
+          "ticker": "BTC-USD",
+          "etichetta": "Crypto",
+          "criteri": 3,
+          "volatilita": 0.373,
+          "in_portafoglio": false
+        },
+        {
           "ticker": "MSFT",
           "etichetta": "Azione",
           "criteri": 3,
           "volatilita": 0.378,
-          "in_portafoglio": false
-        },
-        {
-          "ticker": "BTC-USD",
-          "etichetta": "Crypto",
-          "criteri": 3,
-          "volatilita": 0.386,
           "in_portafoglio": false
         },
         {
@@ -265,7 +266,7 @@
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.526,
+          "volatilita": 0.515,
           "in_portafoglio": false
         },
         {
