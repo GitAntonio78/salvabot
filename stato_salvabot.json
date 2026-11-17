@@ -148,6 +148,7 @@
       29.810459491816452,
       29.810459491816452,
       29.673569571115024,
+      29.810459491816452,
       29.810459491816452
     ],
     "storico_eventi": [
@@ -157,11 +158,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "07/11 21:43",
-        "saldo": 29.1,
-        "evento": false
-      },
       {
         "data_ora": "08/11 21:58",
         "saldo": 29.1,
@@ -206,13 +202,14 @@
         "data_ora": "16/11 23:43",
         "saldo": 29.81,
         "evento": false
+      },
+      {
+        "data_ora": "17/11 01:50",
+        "saldo": 29.81,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "15/11 20:20",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "15/11 22:45",
         "esito": "Nessuna variazione critica."
@@ -224,12 +221,16 @@
       {
         "data_ora": "16/11 23:43",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "17/11 01:50",
+        "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "16/11",
-    "controlli_oggi": 3,
+    "giorno_contatore_controlli": "17/11",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "16/11 23:43",
+      "data_ora": "17/11 01:50",
       "soglia": 2,
       "candidati": [
         {
@@ -243,35 +244,35 @@
           "ticker": "AAPL",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.26,
+          "volatilita": 0.259,
           "in_portafoglio": false
         },
         {
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.374,
+          "volatilita": 0.375,
           "in_portafoglio": false
         },
         {
           "ticker": "MSFT",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.379,
+          "volatilita": 0.378,
           "in_portafoglio": false
         },
         {
           "ticker": "AMZN",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.408,
+          "volatilita": 0.404,
           "in_portafoglio": false
         },
         {
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.519,
+          "volatilita": 0.518,
           "in_portafoglio": false
         },
         {
@@ -285,7 +286,7 @@
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 2,
-          "volatilita": 0.382,
+          "volatilita": 0.377,
           "in_portafoglio": false
         }
       ],
