@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": -0.03556804577172481
+        "ultima_variazione_pct": -0.0328770038429939
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 28.932958626848258,
+    "saldo_investito": 29.013689884710185,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -160,7 +160,8 @@
       29.006668378155172,
       29.006668378155172,
       28.911899463023456,
-      28.932958626848258
+      28.932958626848258,
+      29.013689884710185
     ],
     "storico_eventi": [
       {
@@ -169,11 +170,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "10/11 23:13",
-        "saldo": 29.38,
-        "evento": false
-      },
       {
         "data_ora": "11/11 21:51",
         "saldo": 30.0,
@@ -218,13 +214,14 @@
         "data_ora": "19/11 22:38",
         "saldo": 28.93,
         "evento": false
+      },
+      {
+        "data_ora": "20/11 00:34",
+        "saldo": 29.01,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "18/11 22:33",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "19/11 00:17",
         "esito": "Nessuna variazione critica."
@@ -236,12 +233,16 @@
       {
         "data_ora": "19/11 22:38",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "20/11 00:34",
+        "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "19/11",
-    "controlli_oggi": 4,
+    "giorno_contatore_controlli": "20/11",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "19/11 22:38",
+      "data_ora": "20/11 00:34",
       "soglia": 2,
       "candidati": [
         {
