@@ -161,6 +161,7 @@
       29.006668378155172,
       28.911899463023456,
       28.932958626848258,
+      29.013689884710185,
       29.013689884710185
     ],
     "storico_eventi": [
@@ -216,7 +217,7 @@
         "evento": false
       },
       {
-        "data_ora": "20/11 00:34",
+        "data_ora": "20/11 02:34",
         "saldo": 29.01,
         "evento": false
       }
@@ -240,9 +241,9 @@
       }
     ],
     "giorno_contatore_controlli": "20/11",
-    "controlli_oggi": 1,
+    "controlli_oggi": 2,
     "ultima_valutazione": {
-      "data_ora": "20/11 00:34",
+      "data_ora": "20/11 02:34",
       "soglia": 2,
       "candidati": [
         {
@@ -263,7 +264,7 @@
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.323,
+          "volatilita": 0.325,
           "in_portafoglio": false
         },
         {
@@ -277,7 +278,7 @@
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.399,
+          "volatilita": 0.401,
           "in_portafoglio": false
         },
         {
