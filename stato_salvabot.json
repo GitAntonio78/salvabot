@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": -0.0328770038429939
+        "ultima_variazione_pct": -0.0639990773672546
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 29.013689884710185,
+    "saldo_investito": 28.08002767898236,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -162,7 +162,8 @@
       28.911899463023456,
       28.932958626848258,
       29.013689884710185,
-      29.013689884710185
+      29.013689884710185,
+      28.08002767898236
     ],
     "storico_eventi": [
       {
@@ -217,16 +218,12 @@
         "evento": false
       },
       {
-        "data_ora": "20/11 02:34",
-        "saldo": 29.01,
+        "data_ora": "20/11 16:07",
+        "saldo": 28.08,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "19/11 00:17",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "19/11 16:32",
         "esito": "Nessuna variazione critica."
@@ -238,33 +235,37 @@
       {
         "data_ora": "20/11 00:34",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "20/11 16:07",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "20/11",
-    "controlli_oggi": 2,
+    "controlli_oggi": 3,
     "ultima_valutazione": {
-      "data_ora": "20/11 02:34",
+      "data_ora": "20/11 16:07",
       "soglia": 2,
       "candidati": [
         {
           "ticker": "VWCE.DE",
           "etichetta": "ETF",
           "criteri": 3,
-          "volatilita": 0.118,
+          "volatilita": 0.127,
           "in_portafoglio": true
         },
         {
           "ticker": "AAPL",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.252,
+          "volatilita": 0.25,
           "in_portafoglio": false
         },
         {
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.325,
+          "volatilita": 0.328,
           "in_portafoglio": false
         },
         {
@@ -278,28 +279,28 @@
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.401,
+          "volatilita": 0.406,
           "in_portafoglio": false
         },
         {
           "ticker": "AMZN",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.415,
+          "volatilita": 0.414,
           "in_portafoglio": false
         },
         {
           "ticker": "EUNA.DE",
           "etichetta": "ETF",
           "criteri": 2,
-          "volatilita": 0.035,
+          "volatilita": 0.036,
           "in_portafoglio": false
         },
         {
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 2,
-          "volatilita": 0.38,
+          "volatilita": 0.375,
           "in_portafoglio": false
         }
       ],
