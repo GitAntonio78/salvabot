@@ -173,6 +173,7 @@
       27.964196922105728,
       27.964196922105728,
       27.964196922105728,
+      27.964196922105728,
       27.964196922105728
     ],
     "storico_eventi": [
@@ -182,11 +183,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "13/11 23:29",
-        "saldo": 30.08,
-        "evento": false
-      },
       {
         "data_ora": "14/11 22:17",
         "saldo": 29.81,
@@ -231,6 +227,11 @@
         "data_ora": "22/11 23:33",
         "saldo": 27.96,
         "evento": false
+      },
+      {
+        "data_ora": "23/11 01:57",
+        "saldo": 27.96,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
@@ -251,10 +252,10 @@
         "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "22/11",
-    "controlli_oggi": 4,
+    "giorno_contatore_controlli": "23/11",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "22/11 23:33",
+      "data_ora": "23/11 01:57",
       "soglia": 2,
       "candidati": [
         {
@@ -286,17 +287,17 @@
           "in_portafoglio": false
         },
         {
-          "ticker": "AMZN",
-          "etichetta": "Azione",
+          "ticker": "ETH-USD",
+          "etichetta": "Crypto",
           "criteri": 3,
           "volatilita": 0.42,
           "in_portafoglio": false
         },
         {
-          "ticker": "ETH-USD",
-          "etichetta": "Crypto",
+          "ticker": "AMZN",
+          "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.421,
+          "volatilita": 0.42,
           "in_portafoglio": false
         },
         {
