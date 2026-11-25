@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": -0.03451508758048489
+        "ultima_variazione_pct": -0.07148707760719625
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 28.96454737258545,
+    "saldo_investito": 27.85538767178411,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -182,7 +182,8 @@
       28.409968861144844,
       28.96454737258545,
       28.96454737258545,
-      28.96454737258545
+      28.96454737258545,
+      27.85538767178411
     ],
     "storico_eventi": [
       {
@@ -237,16 +238,12 @@
         "evento": false
       },
       {
-        "data_ora": "25/11 04:33",
-        "saldo": 28.96,
+        "data_ora": "25/11 17:57",
+        "saldo": 27.86,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "24/11 03:56",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "24/11 18:52",
         "esito": "Nessuna variazione critica."
@@ -258,19 +255,23 @@
       {
         "data_ora": "25/11 02:20",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "25/11 17:57",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "25/11",
-    "controlli_oggi": 2,
+    "controlli_oggi": 3,
     "ultima_valutazione": {
-      "data_ora": "25/11 04:33",
+      "data_ora": "25/11 17:57",
       "soglia": 2,
       "candidati": [
         {
           "ticker": "VWCE.DE",
           "etichetta": "ETF",
           "criteri": 3,
-          "volatilita": 0.143,
+          "volatilita": 0.15,
           "in_portafoglio": true
         },
         {
@@ -284,7 +285,7 @@
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.339,
+          "volatilita": 0.335,
           "in_portafoglio": false
         },
         {
@@ -298,14 +299,14 @@
           "ticker": "ETH-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.42,
+          "volatilita": 0.418,
           "in_portafoglio": false
         },
         {
           "ticker": "AMZN",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.423,
+          "volatilita": 0.426,
           "in_portafoglio": false
         },
         {
@@ -319,7 +320,7 @@
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 2,
-          "volatilita": 0.39,
+          "volatilita": 0.392,
           "in_portafoglio": false
         }
       ],
