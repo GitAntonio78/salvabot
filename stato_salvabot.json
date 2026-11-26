@@ -184,6 +184,7 @@
       28.96454737258545,
       28.96454737258545,
       27.85538767178411,
+      28.409968861144844,
       28.409968861144844
     ],
     "storico_eventi": [
@@ -193,11 +194,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "16/11 23:43",
-        "saldo": 29.81,
-        "evento": false
-      },
       {
         "data_ora": "17/11 22:50",
         "saldo": 29.01,
@@ -242,13 +238,14 @@
         "data_ora": "25/11 23:34",
         "saldo": 28.41,
         "evento": false
+      },
+      {
+        "data_ora": "26/11 01:44",
+        "saldo": 28.41,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "24/11 23:51",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "25/11 02:20",
         "esito": "Nessuna variazione critica."
@@ -260,12 +257,16 @@
       {
         "data_ora": "25/11 23:34",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "26/11 01:44",
+        "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "25/11",
-    "controlli_oggi": 4,
+    "giorno_contatore_controlli": "26/11",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "25/11 23:34",
+      "data_ora": "26/11 01:44",
       "soglia": 2,
       "candidati": [
         {
@@ -286,7 +287,7 @@
           "ticker": "BTC-USD",
           "etichetta": "Crypto",
           "criteri": 3,
-          "volatilita": 0.335,
+          "volatilita": 0.336,
           "in_portafoglio": false
         },
         {
@@ -307,7 +308,7 @@
           "ticker": "AMZN",
           "etichetta": "Azione",
           "criteri": 3,
-          "volatilita": 0.426,
+          "volatilita": 0.423,
           "in_portafoglio": false
         },
         {
@@ -321,7 +322,7 @@
           "ticker": "GOOGL",
           "etichetta": "Azione",
           "criteri": 2,
-          "volatilita": 0.391,
+          "volatilita": 0.39,
           "in_portafoglio": false
         }
       ],
