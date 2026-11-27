@@ -188,6 +188,7 @@
       28.409968861144844,
       28.409968861144844,
       28.68725945582521,
+      27.85538767178411,
       27.85538767178411
     ],
     "storico_eventi": [
@@ -197,11 +198,6 @@
       }
     ],
     "storico_punti": [
-      {
-        "data_ora": "17/11 22:50",
-        "saldo": 29.01,
-        "evento": false
-      },
       {
         "data_ora": "18/11 22:33",
         "saldo": 29.01,
@@ -246,13 +242,14 @@
         "data_ora": "26/11 23:45",
         "saldo": 27.86,
         "evento": false
+      },
+      {
+        "data_ora": "27/11 01:41",
+        "saldo": 27.86,
+        "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "25/11 23:34",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "26/11 01:44",
         "esito": "Nessuna variazione critica."
@@ -264,12 +261,16 @@
       {
         "data_ora": "26/11 23:45",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "27/11 01:41",
+        "esito": "Nessuna variazione critica."
       }
     ],
-    "giorno_contatore_controlli": "26/11",
-    "controlli_oggi": 4,
+    "giorno_contatore_controlli": "27/11",
+    "controlli_oggi": 1,
     "ultima_valutazione": {
-      "data_ora": "26/11 23:45",
+      "data_ora": "27/11 01:41",
       "soglia": 2,
       "candidati": [
         {
