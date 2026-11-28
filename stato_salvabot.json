@@ -6,13 +6,13 @@
         "ticker": "VWCE.DE",
         "prezzo_di_carico": 170.94000244140625,
         "quota_investita": 30.0,
-        "ultima_variazione_pct": -0.04375801813915973
+        "ultima_variazione_pct": -0.03205800660625041
       }
     },
     "in_raffreddamento_fino_al": null
   },
   "portafoglio": {
-    "saldo_investito": 28.68725945582521,
+    "saldo_investito": 29.03825980181249,
     "salvadanaio": 0.0,
     "storico_saldo": [
       30.0,
@@ -194,7 +194,8 @@
       29.03825980181249,
       28.68725945582521,
       28.68725945582521,
-      28.68725945582521
+      28.68725945582521,
+      29.03825980181249
     ],
     "storico_eventi": [
       {
@@ -249,16 +250,12 @@
         "evento": false
       },
       {
-        "data_ora": "28/11 03:30",
-        "saldo": 28.69,
+        "data_ora": "28/11 16:09",
+        "saldo": 29.04,
         "evento": false
       }
     ],
     "storico_controlli_sicurezza": [
-      {
-        "data_ora": "27/11 01:41",
-        "esito": "Nessuna variazione critica."
-      },
       {
         "data_ora": "27/11 17:26",
         "esito": "Nessuna variazione critica."
@@ -270,19 +267,23 @@
       {
         "data_ora": "28/11 01:24",
         "esito": "Nessuna variazione critica."
+      },
+      {
+        "data_ora": "28/11 16:09",
+        "esito": "Nessuna variazione critica."
       }
     ],
     "giorno_contatore_controlli": "28/11",
-    "controlli_oggi": 2,
+    "controlli_oggi": 3,
     "ultima_valutazione": {
-      "data_ora": "28/11 03:30",
+      "data_ora": "28/11 16:09",
       "soglia": 2,
       "candidati": [
         {
           "ticker": "VWCE.DE",
           "etichetta": "ETF",
           "criteri": 3,
-          "volatilita": 0.156,
+          "volatilita": 0.158,
           "in_portafoglio": true
         },
         {
